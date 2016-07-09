@@ -1,4 +1,5 @@
 var request = require('request');
+var spotifyConfig = require('./spotifyConfig.js').spotifyConfig;
 
 var topTracks = [];
 
@@ -8,13 +9,13 @@ function getTopTracks(request, response) {
 
 function requestTopTracks() {
     request({
-        url: 'https://api.spotify.com/v1/me/top/tracks',
+        url: spotifyConfig.topTracksUrl,
         auth: {
-            bearer: 'BQCwJs4pRTkuD815_xtveGQDC1W_nNKaO03e1-cwaQiihJVVX7SPbeoCO5fc48fsPfwfxY_QYivWR1AAmFS_9lPsi5eqtD6zKkFaVRrR213Tf_ByC1NM6pbLowwwisEtFNLwKY4vIeGQptJjLF4',
+            bearer: spotifyConfig.auth.bearer_token,
         },
         qs: {
-            time_range: 'short_term',
-            limit: 5,
+            time_range: spotifyConfig.requestParams.time_range,
+            limit: spotifyConfig.requestParams.limit,
         },
     },
     function (error, response, body) {
