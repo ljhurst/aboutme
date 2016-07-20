@@ -3,7 +3,18 @@
 
 <body>
     <h1>Luke Hurst</h1>
-    <h3>Top Tracks</h3>
+    <h3 id="top-tracks-header">Top Tracks</h3>
+    <ul id="top-tracks-list"></ul>
     <h3>Current Contributions</h3>
     <h3>Recent Runs</h3>
+
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js"></script>
+    <script type="text/javascript" src="js/render.js"></script>
+
+    <script id="song-template" type="text/x-handlebars-template">
+        {{#songs}}
+            <li>{{name}}</li>
+        {{/songs}}
+    </script>
 </body>
