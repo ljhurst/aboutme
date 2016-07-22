@@ -2,17 +2,40 @@
 </head>
 
 <body>
-    <h1><img src="//graph.facebook.com/v2.7/1062530977138608/picture" height="24" width="24"> Luke Hurst</h1>
-    <h3 id="top-tracks-header"><img src="//logo.clearbit.com/spotify.com?size=16"> Top Tracks</h3>
-    <ul id="top-tracks-list">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
-    <h3><img src="//logo.clearbit.com/github.com?size=16"> Current Contributions</h3>
-    <h3><img src="//logo.clearbit.com/nike.com?size=16"> Recent Runs</h3>
+    <div id="banner-container" style="text-align: center">
+        <h1 id="banner-header">
+            <img id="banner-image" src="//graph.facebook.com/v2.7/1062530977138608/picture" height="24" width="24">
+             Luke Hurst
+        </h1>
+    </div>
+
+    <div id="top-tracks-container" style="text-align: center">
+        <h3 id="top-tracks-header">
+            <img id="top-tracks-image" src="//logo.clearbit.com/spotify.com?size=16">
+             Top Tracks
+        </h3>
+        <ul id="top-tracks-list" style="padding:0">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+
+    <div id="current-contribs-container" style="text-align: center">
+        <h3 id="current-contribs-header">
+            <img id="currrent-contribs-image" src="//logo.clearbit.com/github.com?size=16">
+             Current Contributions
+        </h3>
+    </div>
+
+    <div id="recent-runs-container" style="text-align: center">
+        <h3 id="recent-runs-header">
+            <img id="recent-runs-image" src="//logo.clearbit.com/nike.com?size=16">
+             Recent Runs
+        </h3>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js"></script>
@@ -20,7 +43,10 @@
 
     <script id="song-template" type="text/x-handlebars-template">
         {{#songs}}
-            <li>{{name}}</li>
+            <li style="display: inline-block; vertical-align: top; width: 19%; heigth: 100%">
+                <img width="100%" src="{{album.images.[0].url}}">
+                {{name}}
+            </li>
         {{/songs}}
     </script>
 </body>
