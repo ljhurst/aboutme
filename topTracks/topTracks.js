@@ -3,13 +3,13 @@ var refreshSpotifyToken = require('spotify-refresh');
 var spotifyAuth = require('./spotifyAuth.js').spotifyAuth;
 var spotifyConfig = require('./spotifyConfig.js').spotifyConfig;
 
-var topTracks = [];
+var data = [];
 
-function getTopTracks(request, response) {
-    response.send(topTracks);
+function getData() {
+    return data;
 }
 
-function updateAccessTokenAndRequestTopTracks() {
+function requestData() {
     refreshSpotifyToken(spotifyAuth.refreshToken,
         spotifyAuth.clientId,
         spotifyAuth.clientSecret,
@@ -29,12 +29,12 @@ function requestTopTracks(bearerToken) {
     request({
         url: spotifyConfig.topTracksUrl,
         auth: {
-            bearer: bearerToken,
+            bearer: bearerToken
         },
         qs: {
             time_range: spotifyConfig.requestParams.time_range,
-            limit: spotifyConfig.requestParams.limit,
-        },
+            limit: spotifyConfig.requestParams.limit
+        }
     },
     function (error, response, body) {
         if (error) {
@@ -44,11 +44,12 @@ function requestTopTracks(bearerToken) {
             console.log('Data from top tracks request');
             console.log(body);
             body = JSON.parse(body);
-            topTracks = body.items;
+            data = body.items;
         }
     });
 }
 
-updateAccessTokenAndRequestTopTracks();
+requestData();
 
-module.exports.getTopTracks = getTopTracks;
+exports.getData = getData;
+exports.requestData = requestData;
