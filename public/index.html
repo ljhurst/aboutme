@@ -38,9 +38,18 @@
 
     <script id="song-template" type="text/x-handlebars-template">
         {{#songs}}
-            <li style="display: inline-block; vertical-align: top; width: 19%; heigth: 100%">
+            <li style="display: inline-block; vertical-align: top; width: 19%; text-align: left;">
                 <img width="100%" src="{{album.images.[0].url}}">
-                {{name}}
+                <p style="margin:0; margin-top:5px;">{{name}}</p>
+                <p style="margin:0;">
+                {{#artists}}
+                    {{#unless @last}}
+                        {{name}},
+                    {{else}}
+                        {{name}}
+                    {{/unless}}
+                {{/artists}}
+                </p>
             </li>
         {{/songs}}
     </script>
