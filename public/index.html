@@ -37,7 +37,6 @@
     <script type="text/javascript" src="js/render.js"></script>
 
     <!-- Differentiate name and artists text -->
-    <!-- Decorate links -->
     <!-- Add hover effect to tracks - background and play arrow -->
     <script id="song-template" type="text/x-handlebars-template">
         {{#songs}}
@@ -52,7 +51,7 @@
                         {{#artists}}
                             <a target="_blank" href="{{external_urls.spotify}}">
                                 {{#unless @last}}
-                                        {{name}},
+                                    {{name}},
                                 {{else}}
                                     {{name}}
                                 {{/unless}}
