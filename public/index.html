@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
     <title>Luke Hurst</title>
     <!-- TODO: Add favicon -->
@@ -6,49 +7,62 @@
 </head>
 
 <body>
-    <div id="banner-container" style="text-align: center;">
-        <h1 id="banner-header">
-            <img id="banner-image" class="icon" src="//graph.facebook.com/v2.7/1062530977138608/picture?type=square&height=225">
-            <span style="vertical-align:middle"> Luke Hurst</span>
-        </h1>
-    </div>
+    <!-- TODO: Fix Background Image -->
+    <header>
+        <img src="//graph.facebook.com/v2.7/1062530977138608/picture?type=square&height=225">
+        <h1>Luke Hurst</h1>
+    </header>
 
-    <hr>
+    <main>
+        <!-- TODO: Add blurb about what this site is -->
+        <section>
+            <p>Blurb</p>
+        </section>
 
-    <!-- TODO: Embed Spotify Follow Button -->
-    <div id="top-tracks-container" style="text-align: center">
-        <h3 id="top-tracks-header">
-            <img id="top-tracks-image" class="icon" src="//logo.clearbit.com/spotify.com?size=100">
-            <span style="vertical-align:middle"> Top Tracks</span>
-        </h3>
-        <ul id="top-tracks-list" style="padding:0"></ul>
-    </div>
+        <hr>
 
-    <hr>
+        <!-- TODO: Embed Spotify Follow Button -->
+        <!-- TODO: Link 'Top Tracks' to Spotify Api Reference -->
+        <section>
+            <h2>
+                <img class="icon" src="//logo.clearbit.com/spotify.com?size=100">
+                <span> Top Tracks</span>
+            </h2>
+            <ul id="top-tracks-list" style="padding:0"></ul>
+        </section>
 
-    <!-- TODO: Embed GitHub Follow Button -->
-    <div id="current-contribs-container" style="text-align: center">
-        <h3 id="current-contribs-header">
-            <img id="currrent-contribs-image" class="icon" src="//logo.clearbit.com/github.com?size=100">
-            <span style="vertical-align:middle"> Current Contributions</span>
-        </h3>
-    </div>
+        <hr>
 
-    <hr>
+        <!-- TODO: Embed GitHub Follow Button -->
+        <section>
+            <h2>
+                <img class="icon" src="//logo.clearbit.com/github.com?size=100">
+                <span> Current Contributions</span>
+            </h2>
+        </section>
 
-    <div id="recent-runs-container" style="text-align: center">
-        <h3 id="recent-runs-header">
-            <img id="recent-runs-image" class="icon" src="//logo.clearbit.com/nike.com?size=100">
-            <span style="vertical-align:middle"> Recent Runs</span>
-        </h3>
-    </div>
+        <hr>
+
+        <section>
+            <h2>
+                <img class="icon" src="//logo.clearbit.com/nike.com?size=100">
+                <span> Recent Runs</span>
+            </h2>
+        </section>
+    </main>
+
+    <!-- TODO: Add Footer -->
+    <footer>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js"></script>
     <script type="text/javascript" src="js/render.js"></script>
 
+    <!-- TODO: Shrink Title and Artist Font Size -->
     <!-- TODO: Differentiate name and artists text -->
     <!-- TODO: Add hover effect to tracks - background and play arrow -->
+    <!-- TODO: Make list vertical? -->
     <script id="song-template" type="text/x-handlebars-template">
         {{#songs}}
             <li style="display: inline-block; vertical-align: top; width: 19%; text-align: left;">
