@@ -24,6 +24,17 @@ a:hover {
     text-decoration: underline;
 }
 
+footer {
+    margin-top: 40px;
+    margin-left: 40px;
+    margin-right: 40px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: smaller;
+    text-align: center;
+}
+
 h1, h2, strong {
     color: #333;
 }
