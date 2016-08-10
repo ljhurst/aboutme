@@ -15,21 +15,27 @@
     </header>
 
     <main>
-        <!-- TODO: Add blurb about what this site is -->
+        <!-- TODO: Add GitHub repo link -->
         <section>
-            <p>Blurb</p>
+            <p>Welcome to my personal data aggregator! I'm excited for you to
+            learn a little about me through integrations with some of my
+            favorite apps. This site features data from <a href="#top-tracks-header" class="accent">my favorite
+            music</a>, the <a href="#current-contribs-header" class="accent">software projects I'm working on</a>, and how
+            <a href="#recent-runs-header" class="accent">my personal fitness</a> is going. Feel free to check out the
+            <a>GitHub repository</a> for more information on how this site is
+            constructed and future plans I have.</p>
         </section>
 
         <hr>
 
         <section>
-            <h2>
+            <h2 id="top-tracks-header">
                 <a href="//spotify.com" target="_blank">
                     <img src="//logo.clearbit.com/spotify.com?size=100">
                 </a>
                 <span>
                     <a target="_blank" href="//developer.spotify.com/web-api/get-users-top-artists-and-tracks/">Top Tracks</a></span>
-                <span>
+                <span style="float:right; width:93px">
                     <iframe src="//embed.spotify.com/follow/1/?uri=spotify:user:ljhurst&size=basic&theme=light&show-count=0" width="200" height="25" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
                 </span>
             </h2>
@@ -40,7 +46,7 @@
 
         <!-- TODO: Embed GitHub Follow Button -->
         <section>
-            <h2>
+            <h2 id="current-contribs-header">
                 <a href="//github.com" target="_blank">
                     <img src="//logo.clearbit.com/github.com?size=100">
                 </a>
@@ -51,7 +57,7 @@
         <hr>
 
         <section>
-            <h2>
+            <h2 id="recent-runs-header">
                 <a href="//nike.com" target="_blank">
                     <img src="//logo.clearbit.com/nike.com?size=100">
                 </a>
@@ -71,28 +77,28 @@
     <!-- TODO: Shrink Title and Artist Font Size -->
     <!-- TODO: Differentiate name and artists text -->
     <!-- TODO: Add hover effect to tracks - background and play arrow -->
-    <!-- TODO: Make list vertical? -->
     <script id="song-template" type="text/x-handlebars-template">
         {{#songs}}
-            <li style="display: inline-block; vertical-align: top; width: 19%; text-align: left;">
+            <li style="display: inline-block; vertical-align: top; width: 19.5%; text-align: left;">
                 <a target="_blank" href="{{album.external_urls.spotify}}">
                     <img width="100%" src="{{album.images.[0].url}}">
                 </a>
-                <a target="_blank" href="{{external_urls.spotify}}">
-                    <p style="margin:0; margin-top:5px;">{{name}}</p>
-                </a>
-                    <p style="margin:0;">
-                        {{#artists}}
-                            <a target="_blank" href="{{external_urls.spotify}}">
-                                {{#unless @last}}
-                                    {{name}},
-                                {{else}}
-                                    {{name}}
-                                {{/unless}}
-                            </a>
-                        {{/artists}}
-                    </p>
-                </a>
+                <p style="margin:0; margin-top:5px;">
+                    <a target="_blank" href="{{external_urls.spotify}}">
+                        {{name}}
+                    </a>
+                </p>
+                <p style="margin:0;">
+                    {{#artists}}
+                        <a target="_blank" href="{{external_urls.spotify}}">
+                            {{#unless @last}}
+                                {{name}},
+                            {{else}}
+                                {{name}}
+                            {{/unless}}
+                        </a>
+                    {{/artists}}
+                </p>
             </li>
         {{/songs}}
     </script>

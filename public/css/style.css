@@ -102,3 +102,7 @@ iframe {
     overflow: hidden;
     vertical-align: middle;
 }
+
+.accent {
+    color: #006400
+}
