@@ -8,6 +8,7 @@
 
 <body>
     <!-- TODO: Make Contact Button Work -->
+    <!-- TODO: Add location of image -->
     <header>
         <img src="//graph.facebook.com/v2.7/1062530977138608/picture?type=square&height=225">
         <h1>Luke Hurst</h1>
@@ -68,8 +69,16 @@
 
     <!-- TODO: Add GitHub repo link -->
     <!-- TODO: Add icon like favicon -->
+    <!-- TODO: Add Linkedin link -->
+    <!-- TODO: Add Snapchat code -->
     <footer>
-        <span style="float:left">Copyright &copy; 2016 Luke Hurst - <a class="accent">Repo</a></span>
+        <span style="float:left">
+            Copyright &copy;
+                <script type="text/javascript">
+                    document.write(new Date().getFullYear());
+                </script>
+            Luke Hurst - <a class="accent">Repo</a>
+        </span>
         ICON
         <span style="float:right"><a href="#" class="accent">Top</a></span>
     </footer>
@@ -78,8 +87,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js"></script>
     <script type="text/javascript" src="js/render.js"></script>
 
-    <!-- TODO: Shrink Title and Artist Font Size -->
-    <!-- TODO: Differentiate name and artists text -->
     <!-- TODO: Add hover effect to tracks - background and play arrow -->
     <script id="song-template" type="text/x-handlebars-template">
         {{#songs}}
@@ -87,12 +94,12 @@
                 <a target="_blank" href="{{album.external_urls.spotify}}">
                     <img width="100%" src="{{album.images.[0].url}}">
                 </a>
-                <p style="margin:0; margin-top:5px;">
+                <p style="margin:0; font-size:smaller; font-weight:bolder">
                     <a target="_blank" href="{{external_urls.spotify}}">
                         {{name}}
                     </a>
                 </p>
-                <p style="margin:0;">
+                <p style="margin:0; font-size:smaller;">
                     {{#artists}}
                         <a target="_blank" href="{{external_urls.spotify}}">
                             {{#unless @last}}
