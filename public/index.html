@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Luke Hurst</title>
     <!-- TODO: Add favicon -->
     <!-- <link rel="shortcut icon" href="//"> -->
@@ -94,12 +95,12 @@
                 <a target="_blank" href="{{album.external_urls.spotify}}">
                     <img width="100%" src="{{album.images.[0].url}}">
                 </a>
-                <p style="margin:0; font-size:smaller; font-weight:bolder">
+                <p class="song-title">
                     <a target="_blank" href="{{external_urls.spotify}}">
                         {{name}}
                     </a>
                 </p>
-                <p style="margin:0; font-size:smaller;">
+                <p class="song-artist">
                     {{#artists}}
                         <a target="_blank" href="{{external_urls.spotify}}">
                             {{#unless @last}}

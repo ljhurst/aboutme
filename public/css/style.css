@@ -116,5 +116,16 @@ iframe {
 }
 
 .accent {
-    color: #006400
+    color: #006400;
+}
+
+.song-title {
+    margin: 0;
+    font-size: smaller;
+    font-weight: bolder;
+}
+
+.song-artist {
+    margin: 0;
+    font-size: smaller;
 }
