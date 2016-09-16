@@ -3,6 +3,9 @@ var currentContribs = require('./currentContribs/currentContribs.js');
 var topTracks = require('./topTracks/topTracks.js');
 var scheduler = require('./scheduler.js');
 
+var args = process.argv.slice(2);
+var port = args.length === 0 ? 80 : parseInt(args[0]);
+
 var app = express();
 
 app.use(express.static('public'));
@@ -17,6 +20,6 @@ app.get('/current-contribs', function (request, response) {
     response.send(currentContribs.getData());
 });
 
-app.listen(8888);
+app.listen(port);
 
 scheduler.schedule();

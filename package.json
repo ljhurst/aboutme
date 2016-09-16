@@ -11,7 +11,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "sudo nodejs app.js 80",
+    "start": "sudo nodejs app.js",
     "stop": "sudo kill $(pgrep -f 'nodejs app.js')",
     "start-dev": "nodejs app.js 8888",
     "stop-dev": "kill $(pgrep -f 'nodejs app.js')",
