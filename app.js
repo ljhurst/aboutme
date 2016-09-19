@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env nodejs
 
 var express = require('express');
 var currentContribs = require('./currentContribs/currentContribs.js');
