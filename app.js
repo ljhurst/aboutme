@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var express = require('express');
 var currentContribs = require('./currentContribs/currentContribs.js');
 var topTracks = require('./topTracks/topTracks.js');
