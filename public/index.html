@@ -51,6 +51,7 @@
                 </a>
                 <span> Current Contributions</span>
             </h2>
+            <ul id="current-contribs-list" style="padding:0"></ul>
         </section>
 
         <hr>
@@ -109,5 +110,16 @@
                 </p>
             </li>
         {{/songs}}
+    </script>
+    
+    <script id="contrib-template" type="text/x-handlebars-template">
+        {{#contribs}}
+            <li>{{username}} pushed {{numCommits}} to {{repoName}}</li>
+                <ul>
+                    {{#commits}}
+                        <li>{{message}}</li>
+                    {/commits}}
+                </ul>
+        {{/contribs}}
     </script>
 </body>
