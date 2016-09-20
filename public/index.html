@@ -114,11 +114,11 @@
     
     <script id="contrib-template" type="text/x-handlebars-template">
         {{#contribs}}
-            <li>{{username}} pushed {{numCommits}} to {{repoName}}</li>
+            <li>{{actor.login}} pushed {{payload.size}} to {{repo.name}}</li>
                 <ul>
-                    {{#commits}}
+                    {{#payload.commits}}
                         <li>{{message}}</li>
-                    {/commits}}
+                    {/payload.commits}}
                 </ul>
         {{/contribs}}
     </script>
