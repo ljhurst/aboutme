@@ -51,7 +51,7 @@
                 </a>
                 <span> Current Contributions</span>
             </h2>
-            <ul id="current-contribs-list" style="padding:0"></ul>
+            <ol id="current-contribs-list"></ol>
         </section>
 
         <hr>
@@ -84,6 +84,7 @@
     <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js"></script>
     <script type="text/javascript" src="js/render.js"></script>
+    <script type="text/javascript" src="js/helper.js"></script>
 
     <!-- TODO: Add hover effect to tracks - background and play arrow -->
     <script id="song-template" type="text/x-handlebars-template">
@@ -114,12 +115,26 @@
     
     <script id="contrib-template" type="text/x-handlebars-template">
         {{#contribs}}
-            <li>{{actor.login}} pushed {{payload.size}} to {{repo.name}}</li>
+            <li style="padding-bottom: 10px">
+                <a href="{{actor.url}}" target="_blank" class="accent username">
+                    {{actor.login}}
+                </a>
+                pushed {{payload.size}}
+                {{#if_plural payload.size}}
+                    commits
+                {{else}}
+                    commit
+                {{/if_plural}}
+                to
+                <a href="{{repo.url}}" target="_blank" class="accent">
+                    {{repo.name}}
+                </a>
                 <ul>
                     {{#payload.commits}}
                         <li>{{message}}</li>
-                    {/payload.commits}}
+                    {{/payload.commits}}
                 </ul>
+            </li>
         {{/contribs}}
     </script>
 </body>

@@ -129,3 +129,7 @@ iframe {
     margin: 0;
     font-size: smaller;
 }
+
+.username {
+    font-weight: bolder;
+}
