@@ -48,7 +48,6 @@ function replaceUrlsAndAddToData(pushEvent) {
         pushEvent.repo.name = body.name;
         pushEvent.repo.url = body.html_url;
         data.push(pushEvent);
-        console.log(pushEvent);
     });
 }
 

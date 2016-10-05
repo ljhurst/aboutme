@@ -1,11 +1,11 @@
 var node_schedule = require('node-schedule');
 var topTracks = require('./topTracks/topTracks.js');
+var currentContribs = require('./currentContribs/currentContribs.js');
 
 function schedule() {
-    console.log('Scheduler Started');
-    node_schedule.scheduleJob('00 00 * * *', function () {
-        console.log(new Date());
-        topTracks.getData();
+    node_schedule.scheduleJob('00 3 * * *', function () {
+        topTracks.requestData();
+        currentContribs.requestData();
     });
 }
 

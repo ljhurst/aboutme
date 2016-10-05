@@ -18,8 +18,6 @@ function requestData() {
                 console.log('Error refreshing access token');
                 console.log(error);
             } else {
-                console.log('Data from refresh request');
-                console.log(body);
                 requestTopTracks(body.access_token);
             }
         });
@@ -41,8 +39,6 @@ function requestTopTracks(bearerToken) {
             console.log('Error requesting top tracks');
             console.log(error);
         } else {
-            console.log('Data from top tracks request');
-            console.log(body);
             body = JSON.parse(body);
             data = body.items;
         }
