@@ -13,12 +13,10 @@ var app = express();
 app.use(express.static('public'));
 
 app.get('/top-tracks', function (request, response) {
-    console.log('\nSending:', topTracks.getData());
     response.send(topTracks.getData());
 });
 
 app.get('/current-contribs', function (request, response) {
-    console.log('\nSending:',currentContribs.getData());
     response.send(currentContribs.getData());
 });
 
