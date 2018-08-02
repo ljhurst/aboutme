@@ -7,7 +7,9 @@ My website is available at [umich.edu/~hurstlj](http://www-personal.umich.edu/~h
 
 ### Deployment
 
-Deployment happens in two places. A static HTML page is placed on UMich servers while the main app lives in AWS.
+Deployment happens in two places. A static HTML page is placed on UMich servers while the main app lives in AWS. UMich only allows hosting static sites so to make it more interesting while keeping the nice (and free!) domain name the static HTML loads and iframe pointing to the app hosted in the cloud. See below.
+
+![architecture diagram](docs/images/arch.svg)
 
 ##### UMich
 Upload the static HTML page and favicon to UMich servers. SSH access is provided by the login service [here](http://its.umich.edu/computing/web-mobile/login-service) as `ssh <uniqname>@login.itd.umich.edu`.
