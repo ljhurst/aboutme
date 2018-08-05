@@ -31,7 +31,7 @@ A `aboutme-deploy` user is available to deploy the code to S3. If you don't have
 
 ##### S3
 
-Upload static assets to the S3 bucket at `s3://lj-aboutme/`. Everything under `aboutme/aboutme/public` should be uploaded. With proper AWS credentials this command should work
+Upload static assets to the S3 bucket at `s3://lj-aboutme/`. Everything under `aboutme/public` should be uploaded. With proper AWS credentials this command should work
 ```
 aws --profile aboutme s3 cp --recursive aboutme/public/ s3://lj-aboutme/
 ```
