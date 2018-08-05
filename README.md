@@ -25,6 +25,10 @@ index.html                                                                 100% 
 
 #### AWS
 
+##### IAM
+
+A `aboutme-deploy` user is available to deploy the code to S3. If you don't have credentials you'll have to go to the console to get create new ones.
+
 ##### S3
 
 Upload static assets to the S3 bucket at `s3://lj-aboutme/`. Everything under `aboutme/aboutme/public` should be uploaded. With proper AWS credentials this command should work
