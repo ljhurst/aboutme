@@ -29,5 +29,5 @@ index.html                                                                 100% 
 
 Upload static assets to the S3 bucket at `s3://lj-aboutme/`. Everything under `aboutme/aboutme/public` should be uploaded. With proper AWS credentials this command should work
 ```
-aws s3 cp --recursive aboutme/aboutme/public/ s3:/lj-aboutme/
+aws --profile aboutme s3 cp --recursive aboutme/public/ s3://lj-aboutme/
 ```
