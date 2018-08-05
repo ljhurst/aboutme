@@ -16,7 +16,7 @@ Upload the static HTML page and favicon to UMich servers. SSH access is provided
 
 This command should get the job done
 ```
-scp -r umich/ hurstlj@login.itd.umich.edu:/afs/umich.edu/user/h/u/hurstlj/Public/html/
+scp -r umich/* hurstlj@login.itd.umich.edu:/afs/umich.edu/user/h/u/hurstlj/Public/html/
 ```
 ```
 favicon.ico                                                                100% 1150    17.4KB/s   00:00    
