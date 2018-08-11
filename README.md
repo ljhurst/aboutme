@@ -35,3 +35,15 @@ Upload static assets to the S3 bucket at `s3://lj-aboutme/`. Everything under `a
 ```
 aws --profile aboutme s3 sync aboutme/public/ s3://lj-aboutme/ --delete
 ```
+
+## Integrations
+
+The data the site surfaces is powered by various API's
+
+#### Spotify
+The song data is pulled from [Spotify's Top Tracks API](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/). This API allows a user to pull their "top" tracks or artists over the short and long term. "Top" is measured by a user's affinity and is calculated using serveral data points.
+
+This integrations requires authorization so an app exists in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications). The standard `client_id` and `client_secret` are found here.
+
+#### GitHub
+The contribution data is pulled from [GitHub's User Events API](https://developer.github.com/v3/activity/events/). This API doesn't require authentication (for public events) so just hit up the URL.
