@@ -3,3 +3,4 @@ node_modules
 # Output Files
 *.log*
 *.out
+*.zip

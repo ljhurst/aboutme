@@ -1,0 +1,21 @@
+{
+  "name": "currentcontribs",
+  "version": "1.0.0",
+  "description": "An AWS Lambda that pulls GitHub PushEvents",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ljhurst/aboutme/lambdas/currentContribs"
+  },
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "scripts": {
+    "clean": "rm currentContribs.zip",
+    "test": "node index.test.js",
+    "zip": "zip -r currentContribs.zip index.js node_modules/"
+  },
+  "author": "Luke Hurst",
+  "license": "ISC"
+}
