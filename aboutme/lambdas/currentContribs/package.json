@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ljhurst/aboutme/lambdas/currentContribs"
+    "url": "https://github.com/ljhurst/aboutme/tree/master/aboutme/lambdas/currentContribs"
   },
   "dependencies": {
     "request": "^2.88.0",
