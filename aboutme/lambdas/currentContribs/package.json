@@ -8,12 +8,11 @@
     "url": "https://github.com/ljhurst/aboutme/tree/master/aboutme/lambdas/currentContribs"
   },
   "dependencies": {
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "@octokit/rest": "^15.10.0"
   },
   "scripts": {
     "clean": "rm currentContribs.zip",
-    "test": "node index.test.js",
+    "test": "node index.spec.js",
     "zip": "zip -r currentContribs.zip index.js node_modules/"
   },
   "author": "Luke Hurst",

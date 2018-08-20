@@ -1,19 +1,17 @@
-'use strict'
+const octokit = require('@octokit/rest')();
 
-const rpn = require('request-promise-native');
-
-const GITHUB_USER = 'ljhurst';
-const GITHUB_EVENT_URL = `https://api.github.com/users/${GITHUB_USER}/events`
-const GITHUB_PUSH_EVENT = 'PushEvent'
+octokit.authenticate({
+       type: 'token',
+       token: process.env.GH_TOKEN
+});
 
 exports.handler = async (event) => {
-    console.log(`event: ${JSON.stringify(event)}`);
+    console.log(`Received event: ${JSON.stringify(event)}`);
 
     // Get number of events to return from query string
     var eventsLimit = undefined; // MAX
 
-    if (event.queryStringParameters !== null &&
-        event.queryStringParameters !== undefined) {
+    if (event.queryStringParameters !== null) {
         if (event.queryStringParameters.limit !== null &&
             event.queryStringParameters.limit !== undefined &&
             event.queryStringParameters.limit !== "") {
@@ -21,41 +19,40 @@ exports.handler = async (event) => {
             }
     }
 
-    // Get Push Events
-    return await rpn({
-        uri: GITHUB_EVENT_URL,
-        headers: {
-            'User-Agent': GITHUB_USER
-        },
-        json: true
-    }).then(events => {
-        // Select only Push Events
-        const pushEvents = events.filter(e => e.type === GITHUB_PUSH_EVENT);
+    // Get events for user
+    const username = process.env.GH_LOGIN;
 
-        // Select only the first limit Push Events
-        const slicedEvents = pushEvents.slice(0, eventsLimit);
+    const result = await octokit.activity.getEventsForUser({ username });
+    const events = result.data;
 
-        // Update the Push Event's urls
-        return Promise.all(slicedEvents.map(pushEvent => {
-            return rpn({
-                uri: pushEvent.repo.url,
-                headers: {
-                    'User-agent': GITHUB_USER
-                },
-                json: true
-            }).then(repo => {
-                pushEvent.actor.url = repo.owner.html_url;
-                pushEvent.repo.name = repo.name;
-                pushEvent.repo.url = repo.html_url;
-                return pushEvent;
-            }).catch(handleError);
-        })).then(mappedEvents => ({
-            contribs: mappedEvents
-        })).catch(handleError);
-    }).catch(handleError);
+    // Select only public events
+    const publicEvents = events.filter(e => !e.private);
+
+    // Select only Push Events
+    const publicPushEvents = publicEvents.filter(e => e.type === 'PushEvent');
+
+    // Select only the first limit push events
+    const slicedEvents = publicPushEvents.slice(0, eventsLimit);
+
+    // Update the Push Event's urls
+    const updatedPushEventPromises = slicedEvents.map(async (pushEvent) => {
+        const [ owner, repo ] = pushEvent.repo.name.split('/');
+
+        const result = await octokit.repos.get({ owner, repo });
+
+        pushEvent.actor.url = result.data.owner.html_url;
+        pushEvent.repo.name = result.data.name;
+        pushEvent.repo.url = result.data.html_url;
+
+        return pushEvent;
+    });
+
+    return Promise.all(updatedPushEventPromises).then(labmdaResponse);
 };
 
-const handleError = err => {
-    console.error(`caught ${err}`);
-    return err;
-};
+const labmdaResponse = body => ({
+    'statusCode': 200,
+    'headers': {},
+    'body': JSON.stringify(body),
+    'isBase64Encoded': false
+});
