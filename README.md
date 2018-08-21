@@ -25,18 +25,18 @@ index.html                                                                 100% 
 
 #### AWS
 
-##### IAM
+##### [IAM](https://console.aws.amazon.com/iam/home?region=us-east-1#/home)
 
 A `aboutme-deploy` user is available to deploy the code to S3. If you don't have credentials you'll have to go to the console to get create new ones.
 
-##### S3
+##### [S3](https://s3.console.aws.amazon.com/s3/home?region=us-east-1)
 
 Upload static assets to the S3 bucket at `s3://lj-aboutme/`. Everything under `aboutme/public` should be uploaded. With proper AWS credentials this command should work
 ```
 aws --profile aboutme s3 sync aboutme/public/ s3://lj-aboutme/ --delete
 ```
 
-##### Lambda
+##### [Lambda](https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions)
 
 First, zip up the Lambda handler and its dependencies.
 ```
@@ -53,7 +53,7 @@ Finally, set the environment variables. The required environment variables can b
 aws --profile aboutme lambda update-function-configuration --function-name lj-aboutme-current-contribs --environment Variables="{GH_TOKEN=<github-personal-access-token>,GH_LOGIN=ljhurst,DEBUG=current-contribs:lambda}" --region us-east-1 
 ```
 
-##### API Gateway
+##### [API Gateway](https://console.aws.amazon.com/apigateway/home?region=us-east-1)
 TODO
 
 ## Integrations
