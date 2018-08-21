@@ -38,12 +38,12 @@ aws --profile aboutme s3 sync aboutme/public/ s3://lj-aboutme/ --delete
 
 ##### Lambda
 
-First zip up the Lambda handler and its dependencies
+First, zip up the Lambda handler and its dependencies.
 ```
 zip -r /tmp/currentContribs.zip index.js node_modules/
 ```
 
-Then deploy it
+Then, deploy it.
 ```
 aws --profile aboutme lambda update-function-code --function-name lj-aboutme-current-contribs --zip-file fileb:///tmp/currentContribs.zip  --region us-east-1 
 ```
