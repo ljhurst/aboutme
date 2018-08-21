@@ -1,4 +1,7 @@
 $(function () {
+    const API = 'https://63rg8n6j71.execute-api.us-east-1.amazonaws.com/aboutme';
+    const LIMIT = 5;
+
     // Create filler
     const FILLER_OADING_TEXT = 'Loading...';
     const FILLER_HREF = '#';
@@ -31,8 +34,8 @@ $(function () {
         },
     };
 
-    const fillerTracks = new Array(5).fill().map(u => fillerTrack);
-    const fillerContribs = new Array(5).fill().map(u => fillerContrib);
+    const fillerTracks = new Array(LIMIT).fill().map(u => fillerTrack);
+    const fillerContribs = new Array(LIMIT).fill().map(u => fillerContrib);
 
     // Get templates
     let songsTemplate = Handlebars.compile($('#song-template').html());
@@ -46,7 +49,7 @@ $(function () {
     $.ajax({url: '/top-tracks'}).done(function (data) {
         $('#top-tracks-list').html(songsTemplate({songs: data}));
     });
-    $.ajax({url: '/current-contribs'}).done(function (data) {
+    $.ajax({ url: `${API}/current-contribs?limit=${LIMIT}` }).done(function (data) {
         $('#current-contribs-list').html(contribsTemplate({contribs: data}));
     });
 });
