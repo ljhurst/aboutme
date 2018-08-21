@@ -36,6 +36,22 @@ Upload static assets to the S3 bucket at `s3://lj-aboutme/`. Everything under `a
 aws --profile aboutme s3 sync aboutme/public/ s3://lj-aboutme/ --delete
 ```
 
+##### Lambda
+
+First zip up the Lambda handler and its dependencies
+```
+zip -r /tmp/currentContribs.zip index.js node_modules/
+```
+
+Then deploy it
+```
+aws --profile aboutme lambda update-function-code --function-name lj-aboutme-current-contribs --zip-file fileb:///tmp/currentContribs.zip  --region us-east-1 
+```
+
+Finally, set the environment variables. The required environment variables can be found in the `.env.default` file.
+```
+aws --profile aboutme lambda update-function-configuration --function-name lj-aboutme-current-contribs --environment Variables="{GH_TOKEN=<github-personal-access-token>,GH_LOGIN=ljhurst,DEBUG=current-contribs:lambda}" --region us-east-1 
+```
 ## Integrations
 
 The data the site surfaces is powered by various API's
