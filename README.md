@@ -66,4 +66,4 @@ The song data is pulled from [Spotify's Top Tracks API](https://developer.spotif
 This integrations requires authorization so an app exists in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications). The standard `client_id` and `client_secret` are found here.
 
 #### GitHub
-The contribution data is pulled from [GitHub's User Events API](https://developer.github.com/v3/activity/events/). This API doesn't require authentication (for public events) so just hit up the URL.
+The contribution data is pulled from [GitHub's User Events API](https://developer.github.com/v3/activity/events/). While this API doesn't require authentication, authenticated requests have a higher rate limit. Therefore a `personal_access_token` should be created from [GitHub's Developer Settings](https://github.com/settings/tokens)
