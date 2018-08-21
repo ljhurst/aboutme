@@ -52,6 +52,10 @@ Finally, set the environment variables. The required environment variables can b
 ```
 aws --profile aboutme lambda update-function-configuration --function-name lj-aboutme-current-contribs --environment Variables="{GH_TOKEN=<github-personal-access-token>,GH_LOGIN=ljhurst,DEBUG=current-contribs:lambda}" --region us-east-1 
 ```
+
+##### API Gateway
+TODO
+
 ## Integrations
 
 The data the site surfaces is powered by various API's
