@@ -1,3 +1,6 @@
+/*global $*/
+/*global Handlebars*/
+
 $(function () {
     const API = 'https://63rg8n6j71.execute-api.us-east-1.amazonaws.com/aboutme';
     const LIMIT = 5;
@@ -21,7 +24,7 @@ $(function () {
         }],
         'external_urls': { 'spotify': FILLER_HREF },
         'name': FILLER_OADING_TEXT
-    }
+    };
 
     const fillerContrib = {
         'actor': {
@@ -34,8 +37,8 @@ $(function () {
         },
     };
 
-    const fillerTracks = new Array(LIMIT).fill().map(u => fillerTrack);
-    const fillerContribs = new Array(LIMIT).fill().map(u => fillerContrib);
+    const fillerTracks = new Array(LIMIT).fill().map(() => fillerTrack);
+    const fillerContribs = new Array(LIMIT).fill().map(() => fillerContrib);
 
     // Get templates
     let songsTemplate = Handlebars.compile($('#song-template').html());
