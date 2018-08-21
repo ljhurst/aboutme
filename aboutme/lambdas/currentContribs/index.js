@@ -1,27 +1,23 @@
+const log = require('debug')('current-contribs:lambda');
 const octokit = require('@octokit/rest')();
 
 octokit.authenticate({
-       type: 'token',
-       token: process.env.GH_TOKEN
+    type: 'token',
+    token: process.env.GH_TOKEN
 });
 
 exports.handler = async (event) => {
-    console.log(`Received event: ${JSON.stringify(event)}`);
+    log(`Received event: ${JSON.stringify(event)}`);
 
     // Get number of events to return from query string
-    var eventsLimit = undefined; // MAX
+    let eventsLimit = undefined; // MAX
 
     if (event.queryStringParameters !== null) {
-        if (event.queryStringParameters.limit !== null &&
-            event.queryStringParameters.limit !== undefined &&
-            event.queryStringParameters.limit !== "") {
-                eventsLimit = event.queryStringParameters.limit;
-            }
+        eventsLimit = event.queryStringParameters.limit;
     }
 
     // Get events for user
     const username = process.env.GH_LOGIN;
-
     const result = await octokit.activity.getEventsForUser({ username });
     const events = result.data;
 

@@ -8,7 +8,8 @@
     "url": "https://github.com/ljhurst/aboutme/tree/master/aboutme/lambdas/currentContribs"
   },
   "dependencies": {
-    "@octokit/rest": "^15.10.0"
+    "@octokit/rest": "^15.10.0",
+    "debug": "^3.1.0"
   },
   "scripts": {
     "clean": "rm currentContribs.zip",
