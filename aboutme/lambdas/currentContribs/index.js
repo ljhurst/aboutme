@@ -1,6 +1,5 @@
 const log = require('debug')('current-contribs:lambda');
 const octokit = require('@octokit/rest')();
-const labmdaResponse = require('../common').labmdaResponse;
 
 octokit.authenticate({
     type: 'token',
@@ -46,3 +45,12 @@ exports.handler = async (event) => {
 
     return Promise.all(updatedPushEventPromises).then(labmdaResponse);
 };
+
+const labmdaResponse = body => ({
+    'statusCode': 200,
+    'headers': {
+        'Access-Control-Allow-Origin': '*'
+    },
+    'body': JSON.stringify(body),
+    'isBase64Encoded': false
+});
