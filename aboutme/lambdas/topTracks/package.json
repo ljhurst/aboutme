@@ -1,0 +1,22 @@
+{
+  "name": "toptracks",
+  "version": "1.0.0",
+  "description": "An AWS Lambda that pulls Spotify Top Tracks",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -f topTracks.zip",
+    "test": "DEBUG=top-tracks:* node index.spec.js",
+    "zip": "zip -r topTracks.zip index.js node_modules/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ljhurst/aboutme/tree/master/aboutme/lambdas/topTracks"
+  },
+  "author": "Luke Hurst",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "express": "^4.16.3",
+    "spotify-web-api-node": "^3.1.1"
+  }
+}
