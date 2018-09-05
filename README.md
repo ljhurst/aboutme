@@ -54,7 +54,24 @@ aws --profile aboutme lambda update-function-configuration --function-name lj-ab
 ```
 
 ##### [API Gateway](https://console.aws.amazon.com/apigateway/home?region=us-east-1)
-TODO
+
+A `lj-aboutme` API Gateway exists to allow the browser to call the Lambda functions. There is a resource for each integration.
+
+The API Gateway uses the [Lambda proxy integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html) to allow the Lambda function to access request information like query parameters in the event delivered to the Lambda. This means the Lambda response must be formatted in a specific way to pass through the API Gateway response. See [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html#api-gateway-proxy-integration-lambda-function-nodejs) for a JavaScript example. In general the response looks like this.
+```json
+{
+    "statusCode": 200,
+    "headers": {
+        "Access-Control-Allow-Origin": "*"
+    },                                                                          
+    "body": "{}",                                               
+    "isBase64Encoded": false
+}
+```
+
+The API Gateway allows CORS so that the endpoints can be invoked directly from the browser. CORS in enabled by two steps.
+1. Use the Action "Enable CORS" to allow the correct request methods (`GET`, `OPTIONS`) and headers
+2. Add `Access-Control-Allow-Origin` to the response headers
 
 ## Integrations
 
