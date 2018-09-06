@@ -27,7 +27,7 @@ exports.handler = async (event) => {
     let tracksLimit = undefined; // MAX
 
     if (event.queryStringParameters !== null) {
-        eventsLimit = event.queryStringParameters.limit;
+        tracksLimit = event.queryStringParameters.limit;
     }
 
     // Get top tracks in short term for user
