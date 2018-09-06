@@ -49,8 +49,8 @@ $(function () {
     $('#current-contribs-list').html(contribsTemplate({contribs: fillerContribs}));
 
     // Render real data
-    $.ajax({url: '/top-tracks'}).done(function (data) {
-        $('#top-tracks-list').html(songsTemplate({songs: data}));
+    $.ajax({url: `${API}/top-tracks?limit=${LIMIT}`}).done(function (res) {
+        $('#top-tracks-list').html(songsTemplate({songs: res.body.items}));
     });
     $.ajax({ url: `${API}/current-contribs?limit=${LIMIT}` }).done(function (data) {
         $('#current-contribs-list').html(contribsTemplate({contribs: data}));
