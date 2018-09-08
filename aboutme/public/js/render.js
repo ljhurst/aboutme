@@ -45,14 +45,14 @@ $(function () {
     let contribsTemplate = Handlebars.compile($('#contrib-template').html());
 
     // Render filler data
-    $('#top-tracks-list').html(songsTemplate({songs: fillerTracks}));
-    $('#current-contribs-list').html(contribsTemplate({contribs: fillerContribs}));
+    $('#top-tracks-list').html(songsTemplate({ songs: fillerTracks }));
+    $('#current-contribs-list').html(contribsTemplate({ contribs: fillerContribs }));
 
     // Render real data
-    $.ajax({url: `${API}/top-tracks?limit=${LIMIT}`}).done(function (res) {
-        $('#top-tracks-list').html(songsTemplate({songs: res.body.items}));
+    $.ajax({ url: `${API}/top-tracks?limit=${LIMIT}` }).done((res) => {
+        $('#top-tracks-list').html(songsTemplate({ songs: res.body.items }));
     });
-    $.ajax({ url: `${API}/current-contribs?limit=${LIMIT}` }).done(function (data) {
-        $('#current-contribs-list').html(contribsTemplate({contribs: data}));
+    $.ajax({ url: `${API}/current-contribs?limit=${LIMIT}` }).done((data) => {
+        $('#current-contribs-list').html(contribsTemplate({ contribs: data }));
     });
 });
