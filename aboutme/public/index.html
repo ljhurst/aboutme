@@ -9,7 +9,7 @@
 <body>
     <!-- TODO: Add location of image -->
     <header>
-        <img src="https://graph.facebook.com/v2.7/1062530977138608/picture?type=square&height=225">
+        <img src="https://graph.facebook.com/v2.7/1062530977138608/picture?type=square&height=225" alt="Facebook profile picture">
         <h1>Luke Hurst</h1>
         <a href="pdf/resume.pdf" target="_blank">Resume</a>
     </header>
@@ -18,10 +18,10 @@
         <section>
             <p>Welcome to my personal data aggregator! I'm excited for you to
             learn a little about me through integrations with some of my
-            favorite apps. This site features data from <b><a href="#top-tracks-header" class="accent">my favorite
-            music</a></b>, the <b><a href="#current-contribs-header" class="accent">software projects I'm working on</a></b>, and how
-            <b><a href="#recent-runs-header" class="accent">my personal fitness</a></b> is going. Feel free to check out the
-            <b><a href="https://github.com/ljhurst/aboutme" class="accent" target="_blank">GitHub repository</a></b> for more information
+            favorite apps. This site features data from <strong><a href="#top-tracks-header" class="accent">my favorite
+            music</a></strong>, the <strong><a href="#current-contribs-header" class="accent">software projects I'm working on</a></strong>, and how
+            <strong><a href="#recent-runs-header" class="accent">my personal fitness</a></strong> is going. Feel free to check out the
+            <strong><a href="https://github.com/ljhurst/aboutme" class="accent" target="_blank">GitHub repository</a></strong> for more information
             on how this site is constructed and future plans I have.</p>
         </section>
 
@@ -30,15 +30,15 @@
         <section>
             <h2 id="top-tracks-header">
                 <a href="https://spotify.com" target="_blank">
-                    <img src="https://logo.clearbit.com/spotify.com?size=100">
+                    <img src="https://logo.clearbit.com/spotify.com?size=100" alt="Spotify logo">
                 </a>
                 <span>
                     <a target="_blank" href="https://developer.spotify.com/web-api/get-users-top-artists-and-tracks/">Top Tracks</a></span>
-                <span style="float:right; width:93px">
-                    <iframe src="https://embed.spotify.com/follow/1/?uri=spotify:user:ljhurst&size=basic&theme=light&show-count=0" width="200" height="25" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+                <span class="float-right">
+                    <iframe id="spotify-follow-button" src="https://embed.spotify.com/follow/1/?uri=spotify:user:ljhurst&size=basic&theme=light&show-count=0" allowtransparency="true"></iframe>
                 </span>
             </h2>
-            <ul id="top-tracks-list" style="padding:0"></ul>
+            <ul id="top-tracks-list"></ul>
         </section>
 
         <hr>
@@ -47,7 +47,7 @@
         <section>
             <h2 id="current-contribs-header">
                 <a href="https://github.com" target="_blank">
-                    <img src="https://logo.clearbit.com/github.com?size=100">
+                    <img src="https://logo.clearbit.com/github.com?size=100" alt="Github logo">
                 </a>
                 <span> Current Contributions</span>
             </h2>
@@ -59,7 +59,7 @@
         <section>
             <h2 id="recent-runs-header">
                 <a href="https://nike.com" target="_blank">
-                    <img src="https://logo.clearbit.com/nike.com?size=100">
+                    <img src="https://logo.clearbit.com/nike.com?size=100" alt="Nike logo">
                 </a>
                 <span> Recent Runs</span>
             </h2>
@@ -71,11 +71,11 @@
     <!-- TODO: Add Linkedin link -->
     <!-- TODO: Add Snapchat code -->
     <footer>
-        <span style="float:left">
+        <span class="float-left">
             Copyright &copy; 2016 Luke Hurst - <a href="https://github.com/ljhurst/aboutme" class="accent" target="_blank">Repo</a>
         </span>
         ICON
-        <span style="float:right"><a href="#" class="accent">Top</a></span>
+        <span class="float-right"><a href="#" class="accent">Top</a></span>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>

@@ -119,6 +119,25 @@ iframe {
     color: #006400;
 }
 
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+#spotify-follow-button {
+    width: 93px;
+    height: 25px;
+    border: none;
+    overflow: hidden;
+}
+
+#top-tracks-list {
+   padding: 0;
+}
+
 .song-title {
     margin: 0;
     font-size: smaller;
