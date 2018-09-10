@@ -80,7 +80,7 @@ The data the site surfaces is powered by various API's
 #### Spotify
 The song data is pulled from [Spotify's Top Tracks API](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/). This API allows a user to pull their "top" tracks or artists over the short and long term. "Top" is measured by a user's affinity and is calculated using serveral data points.
 
-This integrations requires authorization so an app exists in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications). The standard `client_id` and `client_secret` are found here.
+This integrations requires authorization so an app exists in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications). The standard `client_id` and `client_secret` are found here. To make calls to this API an `access_token` is needed. `access_token`'s are generated via an OAuth roundtrip so a running server is required. Run this server with `DEBUG=top-tracks:auth node auth-server.js` and visit localhost:8888. There you will see a link to authorize with Spotify. After clicking the link, the `access_token` and associated `refresh_token` will be printed to the terminal so they can be saved in `.env` or uploaded to the Lambda.
 
 #### GitHub
 The contribution data is pulled from [GitHub's User Events API](https://developer.github.com/v3/activity/events/). While this API doesn't require authentication, authenticated requests have a higher rate limit. Therefore a `personal_access_token` should be created from [GitHub's Developer Settings](https://github.com/settings/tokens)
