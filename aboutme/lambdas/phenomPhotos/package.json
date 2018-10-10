@@ -1,0 +1,21 @@
+{
+  "name": "phenomphotos",
+  "version": "1.0.0",
+  "description": "An AWS Lambda that pulls Google Photos",
+  "main": "index.js",
+  "scripts": {
+    "test": "DEBUG=phenom-photos:* node index.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ljhurst/aboutme/tree/master/aboutme/lambdas/phenomPhotos"
+  },
+  "author": "Luke Hurst",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "googleapis": "^34.0.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
+}
