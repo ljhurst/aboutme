@@ -1,4 +1,4 @@
-const log = require('debug')('top-tracks:lambda');
+const log = require('debug')('phenom-photos:lambda');
 const request = require('request-promise');
 const { google } = require('googleapis');
 
@@ -15,14 +15,6 @@ let nextRefresh = Date.now();
 exports.handler = async (event) => {
     log(`Received event: ${JSON.stringify(event)}`);
 
-    // Check if access token needs to be refreshed
-    if (Date.now() > nextRefresh) {
-        const tokens = await oauth2Client.refreshAccessToken();
-
-        process.env.GOOGLE_ACCESS_TOKEN = tokens.access_token;
-        nextRefresh = new Date(tokens.expiry_date);
-    }
-
     // Get number of photos to return from query string
     let photosLimit = undefined; // MAX
 
@@ -31,11 +23,10 @@ exports.handler = async (event) => {
     }
 
     // Get photos featuring landscapes and nothing else
-    const auth = {
-        'bearer': process.env.GOOGLE_ACCESS_TOKEN
-    };
+    const auth = await oauth2Client.getAccessToken();
 
     const headers = {
+        'Authorization': `Bearer ${auth.token}`,
         'Content-Type': 'application/json'
     };
 
@@ -53,7 +44,6 @@ exports.handler = async (event) => {
     };
 
     const phenomPhotos = await request.post('https://photoslibrary.googleapis.com/v1/mediaItems:search', {
-        auth: auth,
         headers: headers,
         json: json
     });

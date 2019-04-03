@@ -1,4 +1,4 @@
-const log = require('debug')('top-tracks:test');
+const log = require('debug')('phenom-photos:test');
 
 const handler = require('./index.js').handler;
 
