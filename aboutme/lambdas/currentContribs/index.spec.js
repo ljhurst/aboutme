@@ -1,9 +1,11 @@
-const log = require('debug')('current-contribs:test');
+import createDebug from 'debug';
 
-const handler = require('./index.js').handler;
+import { handler } from './index.js';
+
+const log = createDebug('current-contribs:test');
 
 const noLimit = { queryStringParameters: null };
 const limit5 = { queryStringParameters: { limit: 5 } };
 
-handler(noLimit).then(data => log(data));
-handler(limit5).then(data => log(data));
+handler(noLimit).then((data) => log(data));
+handler(limit5).then((data) => log(data));
