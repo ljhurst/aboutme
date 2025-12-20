@@ -39,7 +39,15 @@ index.html                                                                 100% 
 #### [IAM](https://console.aws.amazon.com/iam/home?region=us-east-1#/home)
 
 A `aboutme-deploy` user is available to deploy the code to S3.
-If you don't have credentials you'll have to go to the console to get new ones.
+If you don't have credentials you'll have to go to the console to create new ones
+
+Save the credentials in `~/.aws/credentials` under an `[aboutme]` profile
+
+```bash
+[aboutme]
+aws_access_key_id = <access-key-id>
+aws_secret_access_key = <secret-access-key>
+```
 
 #### [S3](https://s3.console.aws.amazon.com/s3/home?region=us-east-1)
 
@@ -59,7 +67,7 @@ Zip up the Lambda handler and its dependencies.
 npm run zip
 ```
 
-Then, deploy it.
+Deploy it
 
 ```bash
 aws --profile aboutme lambda update-function-code --function-name lj-aboutme-current-contribs --zip-file fileb://currentContribs.zip  --region us-east-1 
