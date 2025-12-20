@@ -51,10 +51,18 @@ aws_secret_access_key = <secret-access-key>
 
 #### [S3](https://s3.console.aws.amazon.com/s3/home?region=us-east-1)
 
-Upload static assets to the S3 bucket at `s3://lj-aboutme/`. Everything under `aboutme/public` should be uploaded. With proper AWS credentials this command should work
+Upload static assets to the S3 bucket at `s3://lj-aboutme/`.
+
+Go to `aboutme/public` and build the static assets
 
 ```bash
-aws --profile aboutme s3 sync aboutme/public/ s3://lj-aboutme/ --delete
+npm run build
+```
+
+Deploy the static assets
+
+```bash
+aws --profile aboutme s3 sync dist/ s3://lj-aboutme/ --delete
 ```
 
 #### [Lambda](https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions)
