@@ -1,0 +1,24 @@
+{
+    "name": "aboutme",
+    "version": "1.0.0",
+    "description": "A repository for my personal website",
+    "type": "module",
+    "main": "index.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "scripts": {
+        "format": "prettier --write .",
+        "lint": "eslint .",
+        "lint:fix": "npm run lint -- --fix",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "mkdir -p dist && cp -r css images js pdf index.html dist/"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "eslint": "^9.24.0",
+        "globals": "^16.5.0",
+        "prettier": "^3.5.3"
+    }
+}
