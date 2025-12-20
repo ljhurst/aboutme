@@ -1,51 +1,65 @@
-const SpotifyWebApi = require('spotify-web-api-node');
-const log = require('debug')('top-tracks:lambda');
+import SpotifyWebApi from 'spotify-web-api-node';
+import createDebug from 'debug';
+
+const log = createDebug('top-tracks:lambda');
+
+const NO_TRACKS_LIMIT = undefined;
 
 const spotifyWebApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-    refreshToken: process.env.SPOTIFY_REFRESH_TOKEN
+    refreshToken: process.env.SPOTIFY_REFRESH_TOKEN,
 });
 
 let nextRefresh = Date.now();
 
-exports.handler = async (event) => {
-    log(`Received event: ${JSON.stringify(event)}`);
-
-    // Check if access token needs to be refreshed
+const ensureAccessToken = async () => {
     if (Date.now() > nextRefresh) {
+        log('Refreshing Spotify access token');
+
         const response = await spotifyWebApi.refreshAccessToken();
 
         process.env.SPOTIFY_ACCESS_TOKEN = response.body.access_token;
         nextRefresh += response.body.expires_in * 1000;
     }
 
-    // Set up to date access token
     spotifyWebApi.setAccessToken(process.env.SPOTIFY_ACCESS_TOKEN);
+};
 
-    // Get number of tracks to return from query string
-    let tracksLimit = undefined; // MAX
-
-    if (event.queryStringParameters !== null) {
-        tracksLimit = event.queryStringParameters.limit;
+const getTracksLimit = (queryStringParameters) => {
+    if (queryStringParameters !== null) {
+        return queryStringParameters.limit;
     }
 
-    // Get top tracks in short term for user
+    return NO_TRACKS_LIMIT;
+};
+
+const getTopTracks = async (tracksLimit) => {
     const options = {
         time_range: 'short_term',
-        limit: tracksLimit
+        limit: tracksLimit,
     };
 
-    const topTracks = await spotifyWebApi.getMyTopTracks(options);
+    return await spotifyWebApi.getMyTopTracks(options);
+};
+
+const labmdaResponse = (body) => ({
+    statusCode: 200,
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+    },
+    body: JSON.stringify(body),
+    isBase64Encoded: false,
+});
+
+export const handler = async (event) => {
+    log(`Received event: ${JSON.stringify(event)}`);
+
+    await ensureAccessToken();
+
+    const tracksLimit = getTracksLimit(event.queryStringParameters);
+
+    const topTracks = await getTopTracks(tracksLimit);
 
     return labmdaResponse(topTracks);
 };
-
-const labmdaResponse = body => ({
-    'statusCode': 200,
-    'headers': {
-        'Access-Control-Allow-Origin': '*'
-    },
-    'body': JSON.stringify(body),
-    'isBase64Encoded': false
-});

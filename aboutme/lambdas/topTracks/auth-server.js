@@ -1,13 +1,24 @@
-const SpotifyWebApi = require('spotify-web-api-node');
-const express = require('express');
-const log = require('debug')('top-tracks:auth');
+import SpotifyWebApi from 'spotify-web-api-node';
+import createDebug from 'debug';
+import express from 'express';
+import https from 'https';
+import fs from 'fs';
 
+const log = createDebug('top-tracks:auth');
+
+const HOST = '127.0.0.1';
 const PORT = 8888;
+const URL_STRING = `https://${HOST}:${PORT}`;
+
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem'),
+};
 
 const spotifyWebApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-    redirectUri: `http://localhost:${PORT}/callback`
+    redirectUri: `${URL_STRING}/callback`,
 });
 
 const app = express();
@@ -27,4 +38,6 @@ app.get('/callback', async (req, res) => {
     res.send('Access token and refresh token have been printed to stdout');
 });
 
-app.listen(PORT, () => log(`listening on ${PORT}`));
+https.createServer(options, app).listen(PORT, HOST, () => {
+    log(`HTTPS server running on ${URL_STRING}`);
+});
