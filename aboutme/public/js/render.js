@@ -58,14 +58,32 @@
     setInnerHtmlById(TOP_TRACKS_LIST_ID, songsTemplate({ songs: fillerTracks }));
     setInnerHtmlById(CURRENT_CONTRIBS_LIST_ID, contribsTemplate({ contribs: fillerContribs }));
 
-    // Render real data
-    //$.ajax({ url: `${API}/top-tracks?limit=${LIMIT}` }).done((res) => {
-    //    $('#top-tracks-list').html(songsTemplate({ songs: res.body.items }));
-    //});
+    const [tracksResult, contribsResult] = await Promise.allSettled([
+        fetch(`${API}/top-tracks?limit=${LIMIT}`).then((res) => res.json()),
+        fetch(`${API}/current-contribs?limit=${LIMIT}`).then((res) => res.json()),
+    ]);
 
-    const response = await fetch(`${API}/current-contribs?limit=${LIMIT}`);
-    const contribs = await response.json();
-    setInnerHtmlById(CURRENT_CONTRIBS_LIST_ID, contribsTemplate({ contribs: contribs }));
+    if (tracksResult.status === 'fulfilled') {
+        setInnerHtmlById(
+            TOP_TRACKS_LIST_ID,
+            songsTemplate({ songs: tracksResult.value.body.items }),
+        );
+    }
+
+    if (contribsResult.status === 'fulfilled') {
+        setInnerHtmlById(
+            CURRENT_CONTRIBS_LIST_ID,
+            contribsTemplate({ contribs: contribsResult.value }),
+        );
+    }
+
+    if (tracksResult.status === 'rejected') {
+        console.error('Error fetching top tracks:', tracksResult.reason);
+    }
+
+    if (contribsResult.status === 'rejected') {
+        console.error('Error fetching current contributions:', contribsResult.reason);
+    }
 
     function getInnterHtmlById(id) {
         return document.getElementById(id).innerHTML;

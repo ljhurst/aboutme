@@ -116,12 +116,29 @@ The data the site surfaces is powered by various API's
 ### Spotify
 
 The song data is pulled from [Spotify's Top Tracks API](https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/).
-This API allows a user to pull their "top" tracks or artists over the short and long term. "Top" is measured by a user's affinity and is calculated using serveral data points.
+This API allows a user to pull their "top" tracks or artists over the short and long term. "Top" is measured by a user's affinity and is calculated using several data points.
 
-This integrations requires authorization so an app exists in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications).
-The standard `client_id` and `client_secret` are found here. To make calls to this API an `access_token` is needed.
-`access_token`'s are generated via an OAuth roundtrip so a running server is required.
-Run this server with `DEBUG=top-tracks:auth node auth-server.js` and visit localhost:8888.
+This integrations requires authorization so an app exists in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
+The standard `client_id` and `client_secret` are found here.
+
+The next steps are to prime the OAuth flow to get an `access_token`.
+`access_token`'s are generated via an OAuth round trip.
+
+We need a secure redirect URL so first we'll generate a cert for HTTPS.
+We only need to fill out the `Common Name` field with 127.0.0.1 when prompted.
+
+```bash
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+```
+
+Then run the provided server
+
+```bash
+DEBUG=top-tracks:auth node auth-server.js
+```
+
+Then open a browser and visit <https://localhost:8888>.
+
 There you will see a link to authorize with Spotify.
 After clicking the link, the `access_token` and associated `refresh_token` will be printed to the terminal so they can be saved in `.env` or uploaded to the Lambda.
 

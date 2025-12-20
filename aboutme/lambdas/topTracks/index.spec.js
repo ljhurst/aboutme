@@ -1,9 +1,10 @@
-const log = require('debug')('top-tracks:test');
+import createDebug from 'debug';
+import { handler } from './index.js';
 
-const handler = require('./index.js').handler;
+const log = createDebug('top-tracks:test');
 
 const noLimit = { queryStringParameters: null };
 const limit5 = { queryStringParameters: { limit: 5 } };
 
-handler(noLimit).then(data => log(data));
-handler(limit5).then(data => log(data));
+handler(noLimit).then((data) => log(data));
+handler(limit5).then((data) => log(data));
