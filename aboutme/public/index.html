@@ -4,20 +4,37 @@
     <title>Luke Hurst</title>
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body
+    class="m-0 p-0 font-['Roboto','Helvetica','Arial',sans-serif] text-base leading-relaxed text-gray-600 bg-white"
+>
     <!-- TODO: Add location of image -->
-    <header>
-        <img
+    <header
+        class="flex flex-col items-center gap-6 bg-[#263d36] bg-[url('images/header.jpg')] bg-[center_top] bg-no-repeat bg-cover leading-tight py-[10vw] px-8 text-center"
+    >
+        <!-- <img
             src="https://graph.facebook.com/v2.7/1062530977138608/picture?type=square&height=225"
+            class="h-30 w-30 rounded-full"
             alt="Facebook profile picture"
+        /> -->
+        <img
+            src="/Users/lhurs1/Downloads/download.jpeg"
+            class="h-32 w-32 rounded-full"
+            alt="Luke Hurst profile picture"
         />
-        <h1>Luke Hurst</h1>
-        <a href="pdf/resume.pdf" target="_blank">RESUM&Eacute;</a>
+        <h1 class="text-white text-5xl font-light">Luke Hurst</h1>
+        <a
+            href="pdf/resume.pdf"
+            class="border border-[#006400] rounded-full text-white text-[0.6em] tracking-[0.2em] py-4 px-8 uppercase transition-[color,background] duration-200 ease-out hover:bg-[#006400] hover:no-underline"
+            target="_blank"
+        >
+            R&Eacute;SUM&Eacute;
+        </a>
     </header>
 
-    <main>
+    <main class="mx-auto py-16 px-4 max-w-3xl">
         <section>
             <p>
                 Welcome to my personal data aggregator! I'm excited for you to learn a little about
@@ -42,57 +59,66 @@
             </p>
         </section>
 
-        <hr />
-
         <section>
-            <h2 id="top-tracks-header">
-                <a href="https://spotify.com" target="_blank">
-                    <img src="https://logo.clearbit.com/spotify.com?size=100" alt="Spotify logo" />
-                </a>
-                <span>
+            <h2
+                id="top-tracks-header"
+                class="text-3xl font-bold text-gray-700 mt-8 mb-8 flex items-center justify-between"
+            >
+                <div class="flex items-center gap-2">
+                    <a href="https://spotify.com" target="_blank">
+                        <img
+                            src="https://logo.clearbit.com/spotify.com?size=100"
+                            alt="Spotify logo"
+                            class="h-8 w-8"
+                        />
+                    </a>
                     <a
                         target="_blank"
                         href="https://developer.spotify.com/web-api/get-users-top-artists-and-tracks/"
+                        class="hover:no-underline"
                         >Top Tracks</a
-                    ></span
-                >
-                <span class="float-right">
-                    <iframe
-                        id="spotify-follow-button"
-                        src="https://embed.spotify.com/follow/1/?uri=spotify:user:ljhurst&size=basic&theme=light&show-count=0"
-                        allowtransparency="true"
-                    ></iframe>
-                </span>
+                    >
+                </div>
+                <iframe
+                    class="w-24 h-7 border-0 overflow-hidden align-middle"
+                    src="https://embed.spotify.com/follow/1/?uri=spotify:user:ljhurst&size=basic&theme=light&show-count=0"
+                    allowtransparency="true"
+                ></iframe>
             </h2>
-            <ul id="top-tracks-list"></ul>
+            <ul
+                id="top-tracks-list"
+                class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1"
+            ></ul>
         </section>
 
-        <hr />
-
-        <!-- TODO: Embed GitHub Follow Button -->
         <section>
-            <h2 id="current-contribs-header">
-                <a href="https://github.com" target="_blank">
-                    <img src="https://logo.clearbit.com/github.com?size=100" alt="Github logo" />
-                </a>
-                <span> Current Contributions</span>
-                <span class="float-right">
-                    <a
-                        class="github-button"
-                        href="https://github.com/ljhurst"
-                        data-size="large"
-                        aria-label="Follow @ljhurst on GitHub"
-                        >Follow @ljhurst</a
-                    >
-                </span>
+            <h2
+                id="current-contribs-header"
+                class="text-3xl font-bold text-gray-700 mt-8 mb-8 flex items-center justify-between"
+            >
+                <div class="flex items-center gap-2">
+                    <a href="https://github.com" target="_blank">
+                        <img
+                            src="https://logo.clearbit.com/github.com?size=100"
+                            alt="Github logo"
+                            class="h-8 w-8"
+                        />
+                    </a>
+                    <span>Current Contributions</span>
+                </div>
+                <a
+                    class="github-button"
+                    href="https://github.com/ljhurst"
+                    data-size="large"
+                    aria-label="Follow @ljhurst on GitHub"
+                    >Follow @ljhurst</a
+                >
             </h2>
             <ol id="current-contribs-list"></ol>
         </section>
 
-        <hr />
-
         <section>
-            <h2 id="recent-runs-header">
+            <h2 id="recent-runs-header" class="text-3xl font-bold text-gray-700 mt-8 mb-8">
                 <a href="https://nike.com" target="_blank">
                     <img src="https://logo.clearbit.com/nike.com?size=100" alt="Nike logo" />
                 </a>
@@ -105,13 +131,15 @@
     <!-- TODO: Add icon like favicon -->
     <!-- TODO: Add Linkedin link -->
     <!-- TODO: Add Snapchat code -->
-    <footer>
-        <span class="float-left">
-            Copyright &copy; 2016 Luke Hurst -
-            <a href="https://github.com/ljhurst/aboutme" class="accent" target="_blank">Repo</a>
-        </span>
-        ICON
-        <span class="float-right"><a href="#" class="accent">Top</a></span>
+    <footer class="mt-10 mx-4 md:mx-10 pt-10 pb-10 border-t border-gray-200 text-sm">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="order-2 md:order-1">
+                Copyright &copy; 2016 Luke Hurst -
+                <a href="https://github.com/ljhurst/aboutme" class="accent" target="_blank">Repo</a>
+            </span>
+            <span class="order-1 md:order-2">ICON</span>
+            <span class="order-3"><a href="#" class="accent">Top</a></span>
+        </div>
     </footer>
 
     <script
@@ -124,16 +152,16 @@
     <!-- TODO: Add hover effect to tracks - background and play arrow -->
     <script id="song-template" type="text/x-handlebars-template">
         {{#songs}}
-            <li style='display: inline-block; vertical-align: top; width: 19.5%; text-align: left;'>
+            <li>
                 <a target='_blank' href='{{album.external_urls.spotify}}'>
                     <img width='100%' src='{{album.images.[0].url}}' />
                 </a>
-                <p class='song-title'>
+                <p class='m-0 font-bold text-sm'>
                     <a target='_blank' href='{{external_urls.spotify}}'>
                         {{name}}
                     </a>
                 </p>
-                <p class='song-artist'>
+                <p class='m-0 text-sm'>
                     {{#artists}}
                         <a target='_blank' href='{{external_urls.spotify}}'>
                             {{#unless @last}}
@@ -150,26 +178,43 @@
 
     <script id="contrib-template" type="text/x-handlebars-template">
         {{#contribs}}
-            <li style='padding-bottom: 10px'>
-                <a href='{{actor.url}}' target='_blank' class='accent username'>
-                    {{actor.login}}
-                </a>
-                pushed
-                {{payload.size}}
-                {{#if_plural payload.size}}
-                    commits
-                {{else}}
-                    commit
-                {{/if_plural}}
-                to
-                <a href='{{repo.url}}' target='_blank' class='accent'>
-                    {{repo.name}}
-                </a>
-                <ul>
-                    {{#payload.commits}}
-                        <li>{{message}}</li>
-                    {{/payload.commits}}
-                </ul>
+            <li class='mb-4 list-none'>
+                <div class='border-l-4 border-blue-500 pl-3 pb-3'>
+                    <div class='mb-2 text-gray-600 text-sm flex items-center justify-between'>
+                        <div>
+                            <span class='text-base mr-2'></span>
+                            <a href='{{actor.url}}' target='_blank' class='accent font-extrabold'>
+                                {{actor.login}}
+                            </a>
+                            <span class='text-gray-500'>pushed</span>
+                            <span
+                                class='bg-green-500 text-white px-2 py-0.5 rounded-full text-xs font-semibold mx-1'
+                            >
+                                {{payload.size}}
+                            </span>
+                            <span class='text-gray-500'>
+                                {{#if_plural payload.size}}commits{{else}}commit{{/if_plural}}
+                                to
+                            </span>
+                            <a href='{{repo.url}}' target='_blank' class='accent font-extrabold'>
+                                {{repo.name}}
+                            </a>
+                        </div>
+                        <span class='text-gray-400 text-xs whitespace-nowrap ml-4'>
+                            {{time_ago created_at}}
+                        </span>
+                    </div>
+                    <ul class='ml-5 text-sm space-y-1'>
+                        {{#payload.commits}}
+                            <li class='text-gray-800'>
+                                <code class='text-blue-600 text-xs bg-gray-100 px-1 rounded'>
+                                    {{truncate sha 7}}
+                                </code>
+                                <span class='ml-1'>{{message}}</span>
+                            </li>
+                        {{/payload.commits}}
+                    </ul>
+                </div>
             </li>
         {{/contribs}}
     </script>
