@@ -1,0 +1,25 @@
+<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(25, 30) rotate(-15)">
+    <path d="M0,-8 C-3,-14 -12,-14 -12,-6 C-12,2 0,12 0,12 C0,12 12,2 12,-6 C12,-14 3,-14 0,-8 Z"
+          fill="#006400"
+          stroke="#006400"
+          stroke-width="1"
+          stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(60, 30) rotate(8)">
+    <path d="M0,-8 C-3,-14 -12,-14 -12,-6 C-12,2 0,12 0,12 C0,12 12,2 12,-6 C12,-14 3,-14 0,-8 Z"
+          fill="#006400"
+          stroke="#006400"
+          stroke-width="1"
+          stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(95, 30) rotate(-22)">
+    <path d="M0,-8 C-3,-14 -12,-14 -12,-6 C-12,2 0,12 0,12 C0,12 12,2 12,-6 C12,-14 3,-14 0,-8 Z"
+          fill="#006400"
+          stroke="#006400"
+          stroke-width="1"
+          stroke-linejoin="round"/>
+  </g>
+</svg>

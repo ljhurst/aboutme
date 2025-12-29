@@ -29,7 +29,7 @@
         </a>
     </header>
 
-    <main class="mx-auto py-16 px-4 max-w-3xl">
+    <main class="mx-auto py-16 px-4 max-w-3xl space-y-16">
         <section>
             <p>
                 Welcome to my personal data aggregator! I'm excited for you to learn a little about
@@ -55,15 +55,12 @@
         </section>
 
         <section>
-            <h2
-                id="top-tracks-header"
-                class="text-3xl font-bold text-gray-700 mt-8 mb-8 flex items-center justify-between"
-            >
+            <div id="top-tracks-header" class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <a href="https://spotify.com" target="_blank">
                         <img
-                            src="https://logo.clearbit.com/spotify.com?size=100"
-                            alt="Spotify logo"
+                            src="https://www.google.com/s2/favicons?domain=spotify.com&sz=64"
+                            alt="Spotify favicon"
                             class="h-8 w-8"
                         />
                     </a>
@@ -71,15 +68,20 @@
                         target="_blank"
                         href="https://developer.spotify.com/web-api/get-users-top-artists-and-tracks/"
                         class="hover:no-underline"
-                        >Top Tracks</a
                     >
+                        <h2 class="text-3xl font-bold text-gray-700 mt-8 mb-8">Top Tracks</h2>
+                    </a>
                 </div>
-                <iframe
-                    class="w-24 h-7 border-0 overflow-hidden align-middle"
-                    src="https://embed.spotify.com/follow/1/?uri=spotify:user:ljhurst&size=basic&theme=light&show-count=0"
-                    allowtransparency="true"
-                ></iframe>
-            </h2>
+                <a
+                    href="https://open.spotify.com/user/ljhurst?go=1&sp_cid=follow_button"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-[#1DB954] hover:bg-[#1ed760] hover:no-underline text-white font-semibold rounded-full transition-colors duration-200"
+                >
+                    <img src="images/spotify-dark.svg" alt="Spotify Logo" class="w-5 h-5" />
+                    Follow @ljhurst
+                </a>
+            </div>
             <ul
                 id="top-tracks-list"
                 class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1"
@@ -87,19 +89,18 @@
         </section>
 
         <section>
-            <h2
-                id="current-contribs-header"
-                class="text-3xl font-bold text-gray-700 mt-8 mb-8 flex items-center justify-between"
-            >
+            <div id="current-contribs-header" class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <a href="https://github.com" target="_blank">
                         <img
-                            src="https://logo.clearbit.com/github.com?size=100"
-                            alt="Github logo"
+                            src="https://www.google.com/s2/favicons?domain=github.com&sz=256"
+                            alt="Github favicon"
                             class="h-8 w-8"
                         />
                     </a>
-                    <span>Current Contributions</span>
+                    <h2 class="text-3xl font-bold text-gray-700 mt-8 mb-8">
+                        Current Contributions
+                    </h2>
                 </div>
                 <a
                     class="github-button"
@@ -108,32 +109,45 @@
                     aria-label="Follow @ljhurst on GitHub"
                     >Follow @ljhurst</a
                 >
-            </h2>
+            </div>
             <ol id="current-contribs-list"></ol>
         </section>
 
         <section>
-            <h2 id="recent-runs-header" class="text-3xl font-bold text-gray-700 mt-8 mb-8">
-                <a href="https://nike.com" target="_blank">
-                    <img src="https://logo.clearbit.com/nike.com?size=100" alt="Nike logo" />
-                </a>
-                <span> Recent Runs</span>
-            </h2>
+            <div id="recent-runs-header" class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <a href="https://nike.com" target="_blank">
+                        <img
+                            src="https://www.google.com/s2/favicons?domain=nike.com&sz=256"
+                            alt="Nike favicon"
+                            class="h-8 w-8"
+                        />
+                    </a>
+                    <h2 class="text-3xl font-bold text-gray-700 mt-8 mb-8">Recent Runs</h2>
+                </div>
+            </div>
             Coming Soon - collecting data can only happen one day at a time :)
         </section>
     </main>
 
     <!-- TODO: Add icon like favicon -->
     <!-- TODO: Add Linkedin link -->
-    <!-- TODO: Add Snapchat code -->
     <footer class="mt-10 mx-4 md:mx-10 pt-10 pb-10 border-t border-gray-200 text-sm">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
             <span class="order-2 md:order-1">
                 Copyright &copy; 2016 Luke Hurst -
                 <a href="https://github.com/ljhurst/aboutme" class="accent" target="_blank">Repo</a>
             </span>
-            <span class="order-1 md:order-2">ICON</span>
-            <span class="order-3"><a href="#" class="accent">Top</a></span>
+            <span class="order-1 md:order-2">
+                <img
+                    src="images/lessthanthree-light.svg"
+                    alt="lessthanthree"
+                    class="w-32 h-auto inline-block"
+                />
+            </span>
+            <span class="order-3">
+                <a href="#" class="accent">Top</a>
+            </span>
         </div>
     </footer>
 
