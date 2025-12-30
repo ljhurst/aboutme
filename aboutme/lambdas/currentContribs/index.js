@@ -24,16 +24,54 @@ const getEventsForUser = async (username) => {
     return result.data;
 };
 
-const enrichEventURLs = async (pushEvent) => {
-    const [owner, repo] = pushEvent.repo.name.split('/');
-
+const enrichEventURLs = async (owner, repo, pushEvent) => {
     const result = await octokit.repos.get({ owner, repo });
 
-    pushEvent.actor.url = result.data.owner.html_url;
-    pushEvent.repo.name = result.data.name;
-    pushEvent.repo.url = result.data.html_url;
+    return {
+        actor: {
+            login: pushEvent.actor.login,
+            html_url: result.data.owner.html_url,
+        },
+        repo: {
+            name: result.data.name,
+            html_url: result.data.html_url,
+        },
+    };
+};
 
-    return pushEvent;
+const enrichCommits = async (owner, repo, pushEvent) => {
+    const comparison = await octokit.repos.compareCommits({
+        owner,
+        repo,
+        base: pushEvent.payload.before,
+        head: pushEvent.payload.head,
+    });
+
+    return {
+        payload: {
+            size: comparison.data.commits.length,
+            commits: comparison.data.commits.map((commit) => ({
+                sha: commit.sha,
+                message: commit.commit.message,
+                html_url: commit.html_url,
+            })),
+        },
+    };
+};
+
+const enrichEvent = async (pushEvent) => {
+    const [owner, repo] = pushEvent.repo.name.split('/');
+
+    const [repoEnriched, commitsEnriched] = await Promise.all([
+        enrichEventURLs(owner, repo, pushEvent),
+        enrichCommits(owner, repo, pushEvent),
+    ]);
+
+    return {
+        created_at: pushEvent.created_at,
+        ...repoEnriched,
+        ...commitsEnriched,
+    };
 };
 
 const lambdaResponse = (body) => ({
@@ -55,7 +93,7 @@ export const handler = async (event) => {
     const publicPushEvents = events.filter((e) => e.type === 'PushEvent');
     const slicedEvents = publicPushEvents.slice(0, eventsLimit);
 
-    await Promise.all(slicedEvents.map(enrichEventURLs));
+    const enrichedEvents = await Promise.all(slicedEvents.map(enrichEvent));
 
-    return lambdaResponse(slicedEvents);
+    return lambdaResponse(enrichedEvents);
 };
