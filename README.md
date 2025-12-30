@@ -146,3 +146,4 @@ After clicking the link, the `access_token` and associated `refresh_token` will 
 
 The contribution data is pulled from [GitHub's Public User Events API](https://docs.github.com/en/rest/activity/events?apiVersion=2022-11-28#list-public-events-for-a-user).
 Events are enriched with links from [GitHub's Repos API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+and commit information from [GitHub's Commits API](https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#compare-two-commits).

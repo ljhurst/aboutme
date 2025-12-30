@@ -188,24 +188,32 @@
     <script id="contrib-template" type="text/x-handlebars-template">
         {{#contribs}}
             <li class='mb-4 list-none'>
-                <div class='border-l-4 border-blue-500 pl-3 pb-3'>
+                <div class='bg-white rounded-lg shadow-sm border border-gray-200 p-4'>
                     <div class='mb-2 text-gray-600 text-sm flex items-center justify-between'>
                         <div>
                             <span class='text-base mr-2'></span>
-                            <a href='{{actor.url}}' target='_blank' class='accent font-extrabold'>
+                            <a
+                                href='{{actor.html_url}}'
+                                target='_blank'
+                                class='accent font-extrabold'
+                            >
                                 {{actor.login}}
                             </a>
                             <span class='text-gray-500'>pushed</span>
                             <span
-                                class='bg-green-500 text-white px-2 py-0.5 rounded-full text-xs font-semibold mx-1'
+                                class='bg-[#006400] text-white px-2 py-0.5 rounded-full text-xs font-semibold mx-1'
                             >
-                                {{payload.size}}
+                                {{~payload.size~}}
                             </span>
                             <span class='text-gray-500'>
                                 {{#if_plural payload.size}}commits{{else}}commit{{/if_plural}}
                                 to
                             </span>
-                            <a href='{{repo.url}}' target='_blank' class='accent font-extrabold'>
+                            <a
+                                href='{{repo.html_url}}'
+                                target='_blank'
+                                class='accent font-extrabold'
+                            >
                                 {{repo.name}}
                             </a>
                         </div>
@@ -216,9 +224,10 @@
                     <ul class='ml-5 text-sm space-y-1'>
                         {{#payload.commits}}
                             <li class='text-gray-800'>
-                                <code class='text-blue-600 text-xs bg-gray-100 px-1 rounded'>
-                                    {{truncate sha 7}}
-                                </code>
+                                <code class='text-blue-600 text-xs bg-gray-100 px-1 rounded'><a
+                                        href='{{html_url}}'
+                                        target='_blank'
+                                    >{{~truncate sha 7~}}</a></code>
                                 <span class='ml-1'>{{message}}</span>
                             </li>
                         {{/payload.commits}}
