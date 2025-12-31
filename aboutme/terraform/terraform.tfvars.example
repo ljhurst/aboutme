@@ -1,0 +1,7 @@
+aws_region            = "us-east-1"
+environment           = "prod"
+project_name          = "aboutme"
+spotify_client_id     = ""
+spotify_client_secret = ""
+spotify_access_token  = ""
+spotify_refresh_token = ""

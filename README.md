@@ -4,41 +4,29 @@ A repository for my personal website
 
 ## Where
 
-My website is available at [umich.edu/~hurstlj](http://www-personal.umich.edu/~hurstlj).
-This domain is graciously made available by the University of Michigan.
+My website is available at <http://lj-aboutme.s3-website-us-west-2.amazonaws.com>
+
+## Tour
+
+```tree
+.
+├── aboutme
+│   ├── lambdas    # <-- Backend Lambda source code
+│   ├── public     # <-- Static site source code
+│   └── terraform  # <-- Full stack infrastructure
+└── README.md
+```
+
+## Tech Stack
+
+- Static site hosted on [AWS S3](https://aws.amazon.com/s3/)
+- JavaScript [Lambda](https://aws.amazon.com/lambda/) functions behind an [API Gateway](https://aws.amazon.com/api-gateway/)
 
 ## Deployment
 
-Deployment happens in two places.
-A static HTML page is placed on UMich servers while the main app lives in AWS.
-UMich only allows hosting static sites so to make it more interesting while
-keeping the nice (and free!) domain name the static HTML loads and iframe
-pointing to the app hosted in the cloud. See below.
+### Authentication
 
-![architecture diagram](docs/images/arch.svg)
-
-### UMich
-
-Upload the static HTML page and favicon to UMich servers.
-SSH access is provided by the login service [here](http://its.umich.edu/computing/web-mobile/login-service)
-as `ssh <uniqname>@login.itd.umich.edu`.
-
-This command should get the job done
-
-```bash
-scp -r umich/* hurstlj@login.itd.umich.edu:/afs/umich.edu/user/h/u/hurstlj/Public/html/
-```
-
-```bash
-favicon.ico                                                                100% 1150    17.4KB/s   00:00    
-index.html                                                                 100%  711    10.5KB/s   00:00
-```
-
-### AWS
-
-#### [IAM](https://console.aws.amazon.com/iam/home?region=us-east-1#/home)
-
-A `aboutme-deploy` user is available to deploy the code to S3.
+An `aboutme-deploy` user is available to manage the infrastructure and deploy the code.
 If you don't have credentials you'll have to go to the console to create new ones
 
 Save the credentials in `~/.aws/credentials` under an `[aboutme]` profile
@@ -49,7 +37,42 @@ aws_access_key_id = <access-key-id>
 aws_secret_access_key = <secret-access-key>
 ```
 
-#### [S3](https://s3.console.aws.amazon.com/s3/home?region=us-east-1)
+And then export the profile for use with Terraform and AWS CLI
+
+```bash
+export AWS_PROFILE=aboutme
+```
+
+### Infrastructure
+
+Infrastructure is managed by [Terraform](https://www.terraform.io/).
+
+Go to `aboutme/terraform` and initialize Terraform
+
+```bash
+terraform init
+```
+
+Review the planned changes
+
+```bash
+terraform plan
+```
+
+Apply the changes
+
+```bash
+terraform apply
+```
+
+When making changes to the infrastructure be sure to format and validate
+
+```bash
+terraform fmt
+terraform validate
+```
+
+### Frontend
 
 Upload static assets to the S3 bucket at `s3://lj-aboutme/`.
 
@@ -65,7 +88,9 @@ Deploy the static assets
 aws --profile aboutme s3 sync dist/ s3://lj-aboutme/ --delete
 ```
 
-#### [Lambda](https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions)
+### Backend
+
+#### Lambda
 
 Go to whichever function you want to deploy.
 
@@ -81,17 +106,18 @@ Deploy it
 aws --profile aboutme lambda update-function-code --function-name lj-aboutme-current-contribs --zip-file fileb://currentContribs.zip  --region us-east-1 
 ```
 
-Finally, set the environment variables. The required environment variables can be found in the `.env.default` file.
+If you need to update environment variables, modify them in `aboutme/terraform/terraform.tfvars`
+and re-apply the Terraform configuration.
 
-```bash
-aws --profile aboutme lambda update-function-configuration --function-name lj-aboutme-current-contribs --environment Variables="{DEBUG=current-contribs:lambda}" --region us-east-1 
-```
-
-#### [API Gateway](https://console.aws.amazon.com/apigateway/home?region=us-east-1)
+#### API Gateway
 
 A `lj-aboutme` API Gateway exists to allow the browser to call the Lambda functions. There is a resource for each integration.
 
-The API Gateway uses the [Lambda proxy integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html) to allow the Lambda function to access request information like query parameters in the event delivered to the Lambda. This means the Lambda response must be formatted in a specific way to pass through the API Gateway response. See [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html#api-gateway-proxy-integration-lambda-function-nodejs) for a JavaScript example. In general the response looks like this.
+The API Gateway uses the [Lambda proxy integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html)
+to allow the Lambda function to access request information like query parameters in the event delivered to the Lambda.
+This means the Lambda response must be formatted in a specific way to pass through the API Gateway response.
+See [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html#api-gateway-proxy-integration-lambda-function-nodejs)
+for a JavaScript example. In general the response looks like this.
 
 ```json
 {
@@ -104,10 +130,8 @@ The API Gateway uses the [Lambda proxy integration](https://docs.aws.amazon.com/
 }
 ```
 
-The API Gateway allows CORS so that the endpoints can be invoked directly from the browser. CORS in enabled by two steps.
-
-1. Use the Action "Enable CORS" to allow the correct request methods (`GET`, `OPTIONS`) and headers
-2. Add `Access-Control-Allow-Origin` to the response headers
+The API Gateway allows CORS so that the endpoints can be invoked directly from the browser.
+CORS in enabled in Terraform
 
 ## Integrations
 
