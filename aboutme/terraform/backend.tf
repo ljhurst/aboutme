@@ -40,3 +40,13 @@ resource "aws_lambda_function" "current_contribs" {
     ignore_changes = [filename, source_code_hash]
   }
 }
+
+resource "aws_cloudwatch_log_group" "top_tracks" {
+  name              = "/aws/lambda/${aws_lambda_function.top_tracks.function_name}"
+  retention_in_days = 14
+}
+
+resource "aws_cloudwatch_log_group" "current_contribs" {
+  name              = "/aws/lambda/${aws_lambda_function.current_contribs.function_name}"
+  retention_in_days = 14
+}
