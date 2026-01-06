@@ -1,12 +1,10 @@
 {
     "name": "currentcontribs",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "An AWS Lambda that pulls GitHub PushEvents",
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "format": "prettier --write .",
-        "lint": "eslint .",
         "clean": "rm currentContribs.zip",
         "test": "DEBUG=current-contribs:* node index.spec.js",
         "zip": "zip -r currentContribs.zip index.js package.json package-lock.json node_modules/"
@@ -20,11 +18,5 @@
     "dependencies": {
         "@octokit/rest": "^22.0.1",
         "debug": "^4.4.3"
-    },
-    "devDependencies": {
-        "eslint": "^9.39.2",
-        "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-node": "^11.1.0",
-        "prettier": "^3.7.4"
     }
 }

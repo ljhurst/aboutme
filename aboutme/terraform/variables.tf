@@ -36,3 +36,15 @@ variable "spotify_refresh_token" {
   type        = string
   sensitive   = true
 }
+
+variable "garmin_email" {
+  description = "Garmin Connect Email"
+  type        = string
+  sensitive   = true
+}
+
+variable "garmin_password" {
+  description = "Garmin Connect Password"
+  type        = string
+  sensitive   = true
+}

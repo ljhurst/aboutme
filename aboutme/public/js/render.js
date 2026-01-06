@@ -40,27 +40,42 @@
         },
     };
 
+    const fillerRun = {
+        activityName: FILLER_LOADING_TEXT,
+        averageHR: '-',
+        calories: '-',
+        elevationGain: null,
+        avgPower: '- ',
+    };
+
     const SONG_TEMPLATE_ID = 'song-template';
     const CONTRIB_TEMPLATE_ID = 'contrib-template';
+    const RUN_TEMPLATE_ID = 'run-template';
 
     const TOP_TRACKS_LIST_ID = 'top-tracks-list';
     const CURRENT_CONTRIBS_LIST_ID = 'current-contribs-list';
+    const RECENT_RUNS_LIST_ID = 'recent-runs-list';
 
     const fillerTracks = new Array(LIMIT).fill().map(() => fillerTrack);
     const fillerContribs = new Array(LIMIT).fill().map(() => fillerContrib);
+    const fillerRuns = new Array(LIMIT).fill().map(() => fillerRun);
 
     const songsHtml = getInnterHtmlById(SONG_TEMPLATE_ID);
     const contribsHtml = getInnterHtmlById(CONTRIB_TEMPLATE_ID);
+    const runsHtml = getInnterHtmlById(RUN_TEMPLATE_ID);
 
     const songsTemplate = Handlebars.compile(songsHtml);
     const contribsTemplate = Handlebars.compile(contribsHtml);
+    const runsTemplate = Handlebars.compile(runsHtml);
 
     setInnerHtmlById(TOP_TRACKS_LIST_ID, songsTemplate({ songs: fillerTracks }));
     setInnerHtmlById(CURRENT_CONTRIBS_LIST_ID, contribsTemplate({ contribs: fillerContribs }));
+    setInnerHtmlById(RECENT_RUNS_LIST_ID, runsTemplate({ runs: fillerRuns }));
 
-    const [tracksResult, contribsResult] = await Promise.allSettled([
+    const [tracksResult, contribsResult, runsResult] = await Promise.allSettled([
         fetch(`${API}/top-tracks?limit=${LIMIT}`).then((res) => res.json()),
         fetch(`${API}/current-contribs?limit=${LIMIT}`).then((res) => res.json()),
+        fetch(`${API}/recent-runs?limit=${LIMIT}`).then((res) => res.json()),
     ]);
 
     if (tracksResult.status === 'fulfilled') {
@@ -77,12 +92,20 @@
         );
     }
 
+    if (runsResult.status === 'fulfilled') {
+        setInnerHtmlById(RECENT_RUNS_LIST_ID, runsTemplate({ runs: runsResult.value }));
+    }
+
     if (tracksResult.status === 'rejected') {
         console.error('Error fetching top tracks:', tracksResult.reason);
     }
 
     if (contribsResult.status === 'rejected') {
         console.error('Error fetching current contributions:', contribsResult.reason);
+    }
+
+    if (runsResult.status === 'rejected') {
+        console.error('Error fetching recent runs:', runsResult.reason);
     }
 
     function getInnterHtmlById(id) {

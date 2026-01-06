@@ -1,0 +1,22 @@
+{
+    "name": "recentruns",
+    "version": "1.0.0",
+    "description": "An AWS Lambda that pulls Garmin Connect activities",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "clean": "rm -f recentRuns.zip",
+        "test": "DEBUG=recent-runs:* node index.spec.js",
+        "zip": "zip -r recentRuns.zip index.js package.json package-lock.json node_modules/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ljhurst/aboutme/tree/master/aboutme/lambdas/recentRuns"
+    },
+    "author": "Luke Hurst",
+    "license": "ISC",
+    "dependencies": {
+        "debug": "^4.4.3",
+        "garmin-connect": "^1.6.2"
+    }
+}

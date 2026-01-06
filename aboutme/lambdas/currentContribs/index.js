@@ -1,5 +1,5 @@
-import createDebug from 'debug';
 import { Octokit } from '@octokit/rest';
+import createDebug from 'debug';
 
 const log = createDebug('current-contribs:lambda');
 
