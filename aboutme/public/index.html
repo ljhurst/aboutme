@@ -126,7 +126,7 @@
                     <h2 class="text-3xl font-bold text-gray-700 mt-8 mb-8">Recent Runs</h2>
                 </div>
             </div>
-            Coming Soon - collecting data can only happen one day at a time :)
+            <ol id="recent-runs-list"></ol>
         </section>
     </main>
 
@@ -235,6 +235,70 @@
                 </div>
             </li>
         {{/contribs}}
+    </script>
+
+    <script id="run-template" type="text/x-handlebars-template">
+        {{#runs}}
+            <li class='mb-4 list-none'>
+                <div class='bg-white rounded-lg shadow-sm border border-gray-200 p-4'>
+                    <div class='flex items-start justify-between mb-4'>
+                        <div>
+                            <a
+                                href='https://connect.garmin.com/modern/activity/{{activityId}}'
+                                target='_blank'
+                                class='text-gray-900 font-semibold text-lg hover:text-[#006400] transition-colors'
+                            >
+                                {{activityName}}
+                            </a>
+                            <div class='text-gray-500 text-sm mt-0.5'>
+                                {{time_ago beginTimestamp}}
+                            </div>
+                        </div>
+                        {{#if pr}}
+                            <span
+                                class='bg-[#006400] text-white text-xs font-medium px-2.5 py-1 rounded'
+                            >
+                                PR
+                            </span>
+                        {{/if}}
+                    </div>
+
+                    <div class='grid grid-cols-3 gap-4 mb-4'>
+                        <div>
+                            <div class='text-3xl font-bold text-[#006400]'>
+                                {{format_distance distance}}
+                            </div>
+                            <div
+                                class='text-xs text-gray-500 uppercase tracking-wide mt-1'
+                            >Distance</div>
+                        </div>
+                        <div>
+                            <div class='text-2xl font-bold text-gray-900'>
+                                {{format_pace averageSpeed}}
+                            </div>
+                            <div
+                                class='text-xs text-gray-500 uppercase tracking-wide mt-1'
+                            >Pace</div>
+                        </div>
+                        <div>
+                            <div class='text-2xl font-bold text-gray-900'>
+                                {{format_duration duration}}
+                            </div>
+                            <div
+                                class='text-xs text-gray-500 uppercase tracking-wide mt-1'
+                            >Time</div>
+                        </div>
+                    </div>
+
+                    <div class='flex gap-6 text-sm text-gray-600 pt-3 border-t border-gray-100'>
+                        <span>{{averageHR}} bpm</span>
+                        <span>{{calories}} cal</span>
+                        <span>{{format_elevation elevationGain}} elev</span>
+                        <span>{{avgPower}}W</span>
+                    </div>
+                </div>
+            </li>
+        {{/runs}}
     </script>
 
     <script type="text/javascript" src="js/render.js"></script>

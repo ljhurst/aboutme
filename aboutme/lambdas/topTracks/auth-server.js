@@ -1,8 +1,8 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 import createDebug from 'debug';
 import express from 'express';
-import https from 'https';
 import fs from 'fs';
+import https from 'https';
 
 const log = createDebug('top-tracks:auth');
 

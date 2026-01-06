@@ -10,6 +10,8 @@ export default [
                 process: 'readonly',
             },
         },
-        rules: {},
+        rules: {
+            'sort-imports': ['error'],
+        },
     },
 ];

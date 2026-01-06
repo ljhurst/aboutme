@@ -1,13 +1,15 @@
-const express = require('express');
-const log = require('debug')('phenom-photos:auth');
-const { google } = require('googleapis');
+import createDebug from 'debug';
+import express from 'express';
+import google from 'googleapis';
+
+const log = createDebug('phenom-photos:auth');
 
 const PORT = 8888;
 
 const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    `http://localhost:${PORT}/callback`
+    `http://localhost:${PORT}/callback`,
 );
 
 const app = express();
@@ -15,7 +17,7 @@ const app = express();
 app.get('/', (req, res) => {
     const authURL = oauth2Client.generateAuthUrl({
         access_type: 'offline',
-        scope: 'https://www.googleapis.com/auth/photoslibrary.readonly'
+        scope: 'https://www.googleapis.com/auth/photoslibrary.readonly',
     });
     res.send(`<a href="${authURL}">Authorize</a>`);
 });
