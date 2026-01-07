@@ -40,7 +40,9 @@ const getTopTracks = async (tracksLimit) => {
         limit: tracksLimit,
     };
 
-    return await spotifyWebApi.getMyTopTracks(options);
+    const topTracksResponse = await spotifyWebApi.getMyTopTracks(options);
+
+    return topTracksResponse.body.items;
 };
 
 const labmdaResponse = (body) => ({
