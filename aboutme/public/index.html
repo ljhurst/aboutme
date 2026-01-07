@@ -21,7 +21,7 @@
         />
         <h1 class="text-white text-5xl font-light">Luke Hurst</h1>
         <a
-            href="pdf/resume.pdf"
+            href="https://github.com/ljhurst/infrastructure/blob/master/resumes/resume.pdf"
             class="border border-[#006400] rounded-full text-white text-[0.6em] tracking-[0.2em] py-4 px-8 uppercase transition-[color,background] duration-200 ease-out hover:bg-[#006400] hover:no-underline"
             target="_blank"
         >
@@ -160,7 +160,7 @@
 
     <!-- TODO: Add hover effect to tracks - background and play arrow -->
     <script id="song-template" type="text/x-handlebars-template">
-        {{#songs}}
+        {{#items}}
             <li>
                 <a target='_blank' href='{{album.external_urls.spotify}}'>
                     <img width='100%' src='{{album.images.[0].url}}' />
@@ -182,11 +182,11 @@
                     {{/artists}}
                 </p>
             </li>
-        {{/songs}}
+        {{/items}}
     </script>
 
     <script id="contrib-template" type="text/x-handlebars-template">
-        {{#contribs}}
+        {{#items}}
             <li class='mb-4 list-none'>
                 <div class='bg-white rounded-lg shadow-sm border border-gray-200 p-4'>
                     <div class='mb-2 text-gray-600 text-sm flex items-center justify-between'>
@@ -234,11 +234,11 @@
                     </ul>
                 </div>
             </li>
-        {{/contribs}}
+        {{/items}}
     </script>
 
     <script id="run-template" type="text/x-handlebars-template">
-        {{#runs}}
+        {{#items}}
             <li class='mb-4 list-none'>
                 <div class='bg-white rounded-lg shadow-sm border border-gray-200 p-4'>
                     <div class='flex items-start justify-between mb-4'>
@@ -298,7 +298,7 @@
                     </div>
                 </div>
             </li>
-        {{/runs}}
+        {{/items}}
     </script>
 
     <script type="text/javascript" src="js/render.js"></script>
