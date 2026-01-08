@@ -1,24 +1,29 @@
 import GarminConnectPkg from 'garmin-connect';
+import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import createDebug from 'debug';
 
-const { GarminConnect } = GarminConnectPkg;
+import type { QueryStringParameters, RunActivity, ErrorResponse } from './types.js';
+import type { GarminConnect, GarminActivity } from 'garmin-connect';
+
+const { GarminConnect: GarminConnectClass } = GarminConnectPkg;
 const log = createDebug('recent-runs:lambda');
 
 const ACTIVITY_TYPE_RUNNING = 'running';
 const NO_ACTIVITIES_LIMIT = undefined;
 
-const getRunsLimit = (queryStringParameters) => {
-    if (queryStringParameters !== null) {
-        return queryStringParameters.limit;
+const getRunsLimit = (queryStringParameters: QueryStringParameters): number | undefined => {
+    if (queryStringParameters !== null && queryStringParameters.limit) {
+        const limit = parseInt(queryStringParameters.limit, 10);
+        return isNaN(limit) ? undefined : limit;
     }
 
     return NO_ACTIVITIES_LIMIT;
 };
 
-const authenticateGarmin = async () => {
-    const garminConnect = new GarminConnect({
-        username: process.env.GARMIN_EMAIL,
-        password: process.env.GARMIN_PASSWORD,
+const authenticateGarmin = async (): Promise<GarminConnect> => {
+    const garminConnect = new GarminConnectClass({
+        username: process.env.GARMIN_EMAIL ?? '',
+        password: process.env.GARMIN_PASSWORD ?? '',
     });
 
     await garminConnect.login();
@@ -26,7 +31,10 @@ const authenticateGarmin = async () => {
     return garminConnect;
 };
 
-const getRecentRuns = async (client, activitiesLimit) => {
+const getRecentRuns = async (
+    client: GarminConnect,
+    activitiesLimit: number | undefined,
+): Promise<RunActivity[]> => {
     const runs = await client.getActivities(0, activitiesLimit, ACTIVITY_TYPE_RUNNING);
 
     return runs.map(
@@ -43,7 +51,7 @@ const getRecentRuns = async (client, activitiesLimit) => {
             elevationGain,
             avgPower,
             locationName,
-        }) => ({
+        }: GarminActivity) => ({
             activityId,
             activityName,
             beginTimestamp,
@@ -60,7 +68,10 @@ const getRecentRuns = async (client, activitiesLimit) => {
     );
 };
 
-const lambdaResponse = (statusCode, body) => ({
+const lambdaResponse = (
+    statusCode: number,
+    body: RunActivity[] | ErrorResponse,
+): APIGatewayProxyResult => ({
     statusCode: statusCode,
     headers: {
         'Access-Control-Allow-Origin': '*',
@@ -69,7 +80,7 @@ const lambdaResponse = (statusCode, body) => ({
     isBase64Encoded: false,
 });
 
-export const handler = async (event) => {
+export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     log(`Received event: ${JSON.stringify(event)}`);
 
     try {
@@ -79,7 +90,8 @@ export const handler = async (event) => {
 
         return lambdaResponse(200, runs);
     } catch (error) {
-        log(`Error: ${error.message}`);
-        return lambdaResponse(500, { error: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        log(`Error: ${errorMessage}`);
+        return lambdaResponse(500, { error: errorMessage });
     }
 };
