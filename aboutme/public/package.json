@@ -1,6 +1,6 @@
 {
     "name": "aboutme",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "A repository for my personal website",
     "type": "module",
     "main": "index.js",
@@ -13,7 +13,7 @@
         "lint:fix": "npm run lint -- --fix",
         "preflight": "npm run format && npm run lint:fix",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "mkdir -p dist && cp -r css images js pdf index.html dist/"
+        "build": "mkdir -p dist && cp -r css images js index.html dist/"
     },
     "author": "",
     "license": "ISC",
