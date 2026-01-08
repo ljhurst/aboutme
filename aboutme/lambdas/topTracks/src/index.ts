@@ -1,5 +1,10 @@
+/// <reference types="spotify-api" />
+
 import SpotifyWebApi from 'spotify-web-api-node';
+import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import createDebug from 'debug';
+
+import type { QueryStringParameters } from './types.js';
 
 const log = createDebug('top-tracks:lambda');
 
@@ -11,9 +16,9 @@ const spotifyWebApi = new SpotifyWebApi({
     refreshToken: process.env.SPOTIFY_REFRESH_TOKEN,
 });
 
-let nextRefresh = Date.now();
+let nextRefresh = 0;
 
-const ensureAccessToken = async () => {
+const ensureAccessToken = async (): Promise<void> => {
     if (Date.now() > nextRefresh) {
         log('Refreshing Spotify access token');
 
@@ -23,20 +28,26 @@ const ensureAccessToken = async () => {
         nextRefresh += response.body.expires_in * 1000;
     }
 
-    spotifyWebApi.setAccessToken(process.env.SPOTIFY_ACCESS_TOKEN);
+    const accessToken = process.env.SPOTIFY_ACCESS_TOKEN;
+    if (accessToken) {
+        spotifyWebApi.setAccessToken(accessToken);
+    }
 };
 
-const getTracksLimit = (queryStringParameters) => {
-    if (queryStringParameters !== null) {
-        return queryStringParameters.limit;
+const getTracksLimit = (queryStringParameters: QueryStringParameters): number | undefined => {
+    if (queryStringParameters !== null && queryStringParameters.limit) {
+        const limit = parseInt(queryStringParameters.limit, 10);
+        return isNaN(limit) ? undefined : limit;
     }
 
     return NO_TRACKS_LIMIT;
 };
 
-const getTopTracks = async (tracksLimit) => {
+const getTopTracks = async (
+    tracksLimit: number | undefined,
+): Promise<SpotifyApi.TrackObjectFull[]> => {
     const options = {
-        time_range: 'short_term',
+        time_range: 'short_term' as const,
         limit: tracksLimit,
     };
 
@@ -45,7 +56,7 @@ const getTopTracks = async (tracksLimit) => {
     return topTracksResponse.body.items;
 };
 
-const labmdaResponse = (body) => ({
+const lambdaResponse = (body: SpotifyApi.TrackObjectFull[]): APIGatewayProxyResult => ({
     statusCode: 200,
     headers: {
         'Access-Control-Allow-Origin': '*',
@@ -54,7 +65,7 @@ const labmdaResponse = (body) => ({
     isBase64Encoded: false,
 });
 
-export const handler = async (event) => {
+export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     log(`Received event: ${JSON.stringify(event)}`);
 
     await ensureAccessToken();
@@ -63,5 +74,5 @@ export const handler = async (event) => {
 
     const topTracks = await getTopTracks(tracksLimit);
 
-    return labmdaResponse(topTracks);
+    return lambdaResponse(topTracks);
 };

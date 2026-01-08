@@ -1,13 +1,14 @@
 {
     "name": "toptracks",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "An AWS Lambda that pulls Spotify Top Tracks",
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "clean": "rm -f topTracks.zip",
-        "test": "DEBUG=top-tracks:* node index.spec.js",
-        "zip": "zip -r topTracks.zip index.js package.json package-lock.json node_modules/"
+        "build": "tsc",
+        "clean": "rm -rf dist topTracks.zip",
+        "test": "DEBUG=top-tracks:* tsx src/index.spec.ts",
+        "zip": "npm run build && (cd dist && zip -r ../topTracks.zip index.js types.js *.map) && zip -r topTracks.zip package.json package-lock.json node_modules/"
     },
     "repository": {
         "type": "git",
