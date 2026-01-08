@@ -1,6 +1,6 @@
 {
     "name": "lambdas-dev",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Dev Dependencies for Lambda Development",
     "license": "ISC",
     "author": "",
@@ -14,9 +14,14 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.39.2",
+        "@types/aws-lambda": "^8.10.159",
+        "@types/debug": "^4.1.12",
+        "@types/node": "^24.0.0",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-n": "^17.23.1",
-        "prettier": "^3.7.4"
+        "prettier": "^3.7.4",
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3"
     }
 }

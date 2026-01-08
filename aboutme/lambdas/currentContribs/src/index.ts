@@ -1,5 +1,9 @@
 import { Octokit } from '@octokit/rest';
+import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import type { components } from '@octokit/openapi-types';
 import createDebug from 'debug';
+
+import type { PushEvent, EnrichedEvent, QueryStringParameters } from './types.js';
 
 const log = createDebug('current-contribs:lambda');
 
@@ -8,15 +12,16 @@ const octokit = new Octokit();
 const GITHUB_USERNAME = 'ljhurst';
 const NO_EVENTS_LIMIT = undefined;
 
-const getEventsLimit = (queryStringParameters) => {
-    if (queryStringParameters !== null) {
-        return queryStringParameters.limit;
+const getEventsLimit = (queryStringParameters: QueryStringParameters): number | undefined => {
+    if (queryStringParameters !== null && queryStringParameters.limit) {
+        const limit = parseInt(queryStringParameters.limit, 10);
+        return isNaN(limit) ? undefined : limit;
     }
 
     return NO_EVENTS_LIMIT;
 };
 
-const getEventsForUser = async (username) => {
+const getEventsForUser = async (username: string): Promise<components['schemas']['event'][]> => {
     const result = await octokit.rest.activity.listPublicEventsForUser({
         username,
     });
@@ -24,7 +29,11 @@ const getEventsForUser = async (username) => {
     return result.data;
 };
 
-const enrichEventURLs = async (owner, repo, pushEvent) => {
+const enrichEventURLs = async (
+    owner: string,
+    repo: string,
+    pushEvent: PushEvent,
+): Promise<Pick<EnrichedEvent, 'actor' | 'repo'>> => {
     const result = await octokit.repos.get({ owner, repo });
 
     return {
@@ -39,7 +48,11 @@ const enrichEventURLs = async (owner, repo, pushEvent) => {
     };
 };
 
-const enrichCommits = async (owner, repo, pushEvent) => {
+const enrichCommits = async (
+    owner: string,
+    repo: string,
+    pushEvent: PushEvent,
+): Promise<Pick<EnrichedEvent, 'payload'>> => {
     const comparison = await octokit.repos.compareCommits({
         owner,
         repo,
@@ -59,7 +72,7 @@ const enrichCommits = async (owner, repo, pushEvent) => {
     };
 };
 
-const enrichEvent = async (pushEvent) => {
+const enrichEvent = async (pushEvent: PushEvent): Promise<EnrichedEvent> => {
     const [owner, repo] = pushEvent.repo.name.split('/');
 
     const [repoEnriched, commitsEnriched] = await Promise.all([
@@ -68,13 +81,13 @@ const enrichEvent = async (pushEvent) => {
     ]);
 
     return {
-        created_at: pushEvent.created_at,
+        created_at: pushEvent.created_at ?? '',
         ...repoEnriched,
         ...commitsEnriched,
     };
 };
 
-const lambdaResponse = (body) => ({
+const lambdaResponse = (body: EnrichedEvent[]): APIGatewayProxyResult => ({
     statusCode: 200,
     headers: {
         'Access-Control-Allow-Origin': '*',
@@ -83,14 +96,14 @@ const lambdaResponse = (body) => ({
     isBase64Encoded: false,
 });
 
-export const handler = async (event) => {
+export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     log(`Received event: ${JSON.stringify(event)}`);
 
     const eventsLimit = getEventsLimit(event.queryStringParameters);
 
     const events = await getEventsForUser(GITHUB_USERNAME);
 
-    const publicPushEvents = events.filter((e) => e.type === 'PushEvent');
+    const publicPushEvents = events.filter((e): e is PushEvent => e.type === 'PushEvent');
     const slicedEvents = publicPushEvents.slice(0, eventsLimit);
 
     const enrichedEvents = await Promise.all(slicedEvents.map(enrichEvent));

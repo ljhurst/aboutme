@@ -20,7 +20,7 @@ My website is available at <http://lj-aboutme.s3-website-us-west-2.amazonaws.com
 ## Tech Stack
 
 - Static site hosted on [AWS S3](https://aws.amazon.com/s3/)
-- JavaScript [Lambda](https://aws.amazon.com/lambda/) functions behind an [API Gateway](https://aws.amazon.com/api-gateway/)
+- TypeScript and JavaScript [Lambda](https://aws.amazon.com/lambda/) functions behind an [API Gateway](https://aws.amazon.com/api-gateway/)
 
 ## Deployment
 
