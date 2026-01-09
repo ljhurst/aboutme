@@ -64,7 +64,11 @@ jobs:
         with:
           node-version: 'lts/*'
           cache: 'npm'
-          cache-dependency-path: aboutme/lambdas/${{ matrix.lambda.name }}/package-lock.json
+          cache-dependency-path: aboutme/lambdas/package-lock.json
+
+      - name: Install parent dev dependencies
+        working-directory: aboutme/lambdas
+        run: npm ci
 
       - name: Install Lambda dependencies
         working-directory: aboutme/lambdas/${{ matrix.lambda.name }}
