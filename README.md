@@ -2,6 +2,9 @@
 
 A repository for my personal website
 
+[![Frontend](https://github.com/ljhurst/aboutme/workflows/Frontend/badge.svg)](https://github.com/ljhurst/aboutme/actions/workflows/frontend.yml)
+[![Backend](https://github.com/ljhurst/aboutme/workflows/Backend/badge.svg)](https://github.com/ljhurst/aboutme/actions/workflows/backend.yml)
+
 ## Where
 
 My website is available at <http://lj-aboutme.s3-website-us-west-2.amazonaws.com>
