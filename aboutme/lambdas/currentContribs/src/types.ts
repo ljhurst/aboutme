@@ -31,4 +31,8 @@ type EnrichedEvent = {
 
 type QueryStringParameters = APIGatewayProxyEvent['queryStringParameters'];
 
-export type { PushEvent, EnrichedEvent, QueryStringParameters };
+type ErrorResponse = {
+    error: string;
+};
+
+export type { PushEvent, EnrichedEvent, QueryStringParameters, ErrorResponse };

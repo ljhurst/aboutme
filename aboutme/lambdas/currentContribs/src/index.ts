@@ -3,7 +3,7 @@ import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import type { components } from '@octokit/openapi-types';
 import createDebug from 'debug';
 
-import type { PushEvent, EnrichedEvent, QueryStringParameters } from './types.js';
+import type { PushEvent, EnrichedEvent, QueryStringParameters, ErrorResponse } from './types.js';
 
 const log = createDebug('current-contribs:lambda');
 
@@ -87,8 +87,11 @@ const enrichEvent = async (pushEvent: PushEvent): Promise<EnrichedEvent> => {
     };
 };
 
-const lambdaResponse = (body: EnrichedEvent[]): APIGatewayProxyResult => ({
-    statusCode: 200,
+const lambdaResponse = (
+    statusCode: number,
+    body: EnrichedEvent[] | ErrorResponse,
+): APIGatewayProxyResult => ({
+    statusCode: statusCode,
     headers: {
         'Access-Control-Allow-Origin': '*',
     },
@@ -99,14 +102,20 @@ const lambdaResponse = (body: EnrichedEvent[]): APIGatewayProxyResult => ({
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     log(`Received event: ${JSON.stringify(event)}`);
 
-    const eventsLimit = getEventsLimit(event.queryStringParameters);
+    try {
+        const eventsLimit = getEventsLimit(event.queryStringParameters);
 
-    const events = await getEventsForUser(GITHUB_USERNAME);
+        const events = await getEventsForUser(GITHUB_USERNAME);
 
-    const publicPushEvents = events.filter((e): e is PushEvent => e.type === 'PushEvent');
-    const slicedEvents = publicPushEvents.slice(0, eventsLimit);
+        const publicPushEvents = events.filter((e): e is PushEvent => e.type === 'PushEvent');
+        const slicedEvents = publicPushEvents.slice(0, eventsLimit);
 
-    const enrichedEvents = await Promise.all(slicedEvents.map(enrichEvent));
+        const enrichedEvents = await Promise.all(slicedEvents.map(enrichEvent));
 
-    return lambdaResponse(enrichedEvents);
+        return lambdaResponse(200, enrichedEvents);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        log(`Error: ${errorMessage}`);
+        return lambdaResponse(500, { error: errorMessage });
+    }
 };

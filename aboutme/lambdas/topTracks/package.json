@@ -1,6 +1,6 @@
 {
     "name": "toptracks",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "An AWS Lambda that pulls Spotify Top Tracks",
     "main": "index.js",
     "type": "module",
