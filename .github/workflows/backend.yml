@@ -1,0 +1,93 @@
+---
+name: Backend
+
+on:
+  pull_request:
+    paths:
+      - 'aboutme/lambdas/**'
+      - '.github/workflows/backend.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'aboutme/lambdas/**'
+      - '.github/workflows/backend.yml'
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: aboutme/lambdas/package-lock.json
+
+      - name: Install dependencies
+        working-directory: aboutme/lambdas
+        run: npm ci
+
+      - name: Run lint
+        working-directory: aboutme/lambdas
+        run: npm run lint
+
+      - name: Check formatting
+        working-directory: aboutme/lambdas
+        run: npx prettier --check .
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: lint-and-format
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        lambda:
+          - name: currentContribs
+            function-name: lj-aboutme-current-contribs
+            zip-file: currentContribs.zip
+          - name: topTracks
+            function-name: lj-aboutme-top-tracks
+            zip-file: topTracks.zip
+          - name: recentRuns
+            function-name: lj-aboutme-recent-runs
+            zip-file: recentRuns.zip
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: aboutme/lambdas/${{ matrix.lambda.name }}/package-lock.json
+
+      - name: Install Lambda dependencies
+        working-directory: aboutme/lambdas/${{ matrix.lambda.name }}
+        run: npm ci
+
+      - name: Build Lambda
+        working-directory: aboutme/lambdas/${{ matrix.lambda.name }}
+        run: npm run build
+
+      - name: Create Lambda zip
+        working-directory: aboutme/lambdas/${{ matrix.lambda.name }}
+        run: npm run zip
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy Lambda
+        working-directory: aboutme/lambdas/${{ matrix.lambda.name }}
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ matrix.lambda.function-name }} \
+            --zip-file fileb://${{ matrix.lambda.zip-file }}
