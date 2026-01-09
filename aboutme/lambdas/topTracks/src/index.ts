@@ -4,7 +4,7 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import createDebug from 'debug';
 
-import type { QueryStringParameters } from './types.js';
+import type { QueryStringParameters, ErrorResponse } from './types.js';
 
 const log = createDebug('top-tracks:lambda');
 
@@ -56,8 +56,11 @@ const getTopTracks = async (
     return topTracksResponse.body.items;
 };
 
-const lambdaResponse = (body: SpotifyApi.TrackObjectFull[]): APIGatewayProxyResult => ({
-    statusCode: 200,
+const lambdaResponse = (
+    statusCode: number,
+    body: SpotifyApi.TrackObjectFull[] | ErrorResponse,
+): APIGatewayProxyResult => ({
+    statusCode: statusCode,
     headers: {
         'Access-Control-Allow-Origin': '*',
     },
@@ -68,11 +71,17 @@ const lambdaResponse = (body: SpotifyApi.TrackObjectFull[]): APIGatewayProxyResu
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     log(`Received event: ${JSON.stringify(event)}`);
 
-    await ensureAccessToken();
+    try {
+        await ensureAccessToken();
 
-    const tracksLimit = getTracksLimit(event.queryStringParameters);
+        const tracksLimit = getTracksLimit(event.queryStringParameters);
 
-    const topTracks = await getTopTracks(tracksLimit);
+        const topTracks = await getTopTracks(tracksLimit);
 
-    return lambdaResponse(topTracks);
+        return lambdaResponse(200, topTracks);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        log(`Error: ${errorMessage}`);
+        return lambdaResponse(500, { error: errorMessage });
+    }
 };
