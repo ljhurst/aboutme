@@ -16,17 +16,118 @@
     }
 
     async function fetchData(endpoint) {
-        const response = await fetch(`${API}/${endpoint}?limit=${LIMIT}`);
+        try {
+            const response = await fetch(`${API}/${endpoint}?limit=${LIMIT}`);
 
-        return response.json();
+            if (!response.ok) {
+                throw {
+                    type: 'http',
+                    message: `Failed to load ${endpoint} data`,
+                    status: response.status,
+                    sectionName: endpoint,
+                };
+            }
+
+            return await response.json();
+        } catch (error) {
+            if (error.type) {
+                throw error;
+            }
+
+            if (error instanceof SyntaxError) {
+                throw {
+                    type: 'parse',
+                    message: `Invalid data received from ${endpoint}`,
+                    sectionName: endpoint,
+                };
+            }
+
+            throw {
+                type: 'network',
+                message: `Unable to connect to ${endpoint}`,
+                sectionName: endpoint,
+            };
+        }
     }
 
     function renderSection(listId, template, data) {
         setInnerHtmlById(listId, template({ items: data }));
     }
 
-    function handleError(sectionName, error) {
+    function renderError(listId, template, errorData) {
+        setInnerHtmlById(listId, template(errorData));
+    }
+
+    function handleError(sectionName, error, listId) {
         console.error(`Error processing ${sectionName}:`, error);
+
+        const userFriendlyMessage = getUserFriendlyMessage(error, sectionName);
+        const errorData = {
+            sectionName: sectionName,
+            message: userFriendlyMessage,
+            canRetry: true,
+        };
+
+        const errorTemplateHtml = getInnerHtmlById('error-template');
+        const errorTemplate = Handlebars.compile(errorTemplateHtml);
+
+        renderError(listId, errorTemplate, errorData);
+    }
+
+    function getUserFriendlyMessage(error, sectionName) {
+        if (error.type === 'network') {
+            return `Unable to load ${sectionName}. Please check your connection.`;
+        }
+
+        if (error.type === 'http') {
+            if (error.status >= 500) {
+                return `Service temporarily unavailable. Please try again later.`;
+            }
+            return `Unable to load ${sectionName} at this time.`;
+        }
+
+        if (error.type === 'parse') {
+            return `Failed to load ${sectionName}.`;
+        }
+
+        return `Failed to load ${sectionName}.`;
+    }
+
+    function showRetrySpinner(sectionName) {
+        const button = document.querySelector(`button[data-section="${sectionName}"]`);
+        if (button) {
+            const spinner = button.querySelector('.retry-spinner');
+            if (spinner) {
+                spinner.classList.remove('hidden');
+            }
+            button.disabled = true;
+        }
+    }
+
+    function hideRetrySpinner(sectionName) {
+        const button = document.querySelector(`button[data-section="${sectionName}"]`);
+        if (button) {
+            const spinner = button.querySelector('.retry-spinner');
+            if (spinner) {
+                spinner.classList.add('hidden');
+            }
+            button.disabled = false;
+        }
+    }
+
+    function registerRetryFunction(sectionName, loadFunction) {
+        if (!window.retryFunctions) {
+            window.retryFunctions = {};
+        }
+
+        window.retryFunctions[sectionName] = async () => {
+            showRetrySpinner(sectionName);
+            try {
+                await loadFunction();
+            } finally {
+                hideRetrySpinner(sectionName);
+            }
+        };
     }
 
     function createDataSource(config) {
@@ -36,14 +137,18 @@
 
         renderSection(config.listId, template, fillerArray);
 
-        return async () => {
+        const loadFunction = async () => {
             try {
                 const data = await fetchData(config.endpoint);
                 renderSection(config.listId, template, data);
             } catch (error) {
-                handleError(config.endpoint, error);
+                handleError(config.sectionName, error, config.listId);
             }
         };
+
+        registerRetryFunction(config.sectionName, loadFunction);
+
+        return loadFunction;
     }
 
     const dataSources = [
@@ -51,6 +156,7 @@
             templateId: 'song-template',
             listId: 'top-tracks-list',
             endpoint: 'top-tracks',
+            sectionName: 'Top Tracks',
             filler: {
                 album: {
                     external_urls: { spotify: FILLER_HREF },
@@ -76,6 +182,7 @@
             templateId: 'contrib-template',
             listId: 'current-contribs-list',
             endpoint: 'current-contribs',
+            sectionName: 'Current Contributions',
             filler: {
                 actor: {
                     login: FILLER_LOADING_TEXT,
@@ -91,6 +198,7 @@
             templateId: 'run-template',
             listId: 'recent-runs-list',
             endpoint: 'recent-runs',
+            sectionName: 'Recent Runs',
             filler: {
                 activityName: FILLER_LOADING_TEXT,
                 averageHR: '-',
