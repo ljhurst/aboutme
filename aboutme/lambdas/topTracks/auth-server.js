@@ -10,10 +10,31 @@ const HOST = '127.0.0.1';
 const PORT = 8888;
 const URL_STRING = `https://${HOST}:${PORT}`;
 
+const REQUIRED_ENV_VARS = ['SPOTIFY_CLIENT_ID', 'SPOTIFY_CLIENT_SECRET'];
+const KEY_PATH = 'key.pem';
+const CERT_PATH = 'cert.pem';
+
+for (const path of [KEY_PATH, CERT_PATH]) {
+    if (!fs.existsSync(path)) {
+        log(
+            `Missing ${path} in ${process.cwd()}.\n` +
+                `Generate a self-signed cert. See README for command.`,
+        );
+        process.exit(1);
+    }
+}
+
 const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem'),
+    key: fs.readFileSync(KEY_PATH),
+    cert: fs.readFileSync(CERT_PATH),
 };
+
+const missingEnvVars = REQUIRED_ENV_VARS.filter((name) => !process.env[name]);
+
+if (missingEnvVars.length > 0) {
+    log(`Missing required env var(s): ${missingEnvVars.join(', ')}`);
+    process.exit(1);
+}
 
 const spotifyWebApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
