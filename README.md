@@ -30,27 +30,35 @@ My website is available at <http://lj-aboutme.s3-website-us-west-2.amazonaws.com
 Deployments are automated via GitHub Actions:
 
 - **Pull Requests**: Run lint and format checks
-- **Push to main**: Automatically build and deploy frontend to S3 and all Lambda functions
+- **Push to master**: Automatically build and deploy frontend to S3 and all Lambda functions
 
 For manual deployments (useful for local testing), see the sections below.
 
 ### Authentication
 
-An `aboutme-deploy` user is available to manage the infrastructure and deploy the code.
-If you don't have credentials you'll have to go to the console to create new ones
+We use [AWS IAM Identity Center](https://aws.amazon.com/iam/identity-center/) to
+avoid long lived credentials.
 
-Save the credentials in `~/.aws/credentials` under an `[aboutme]` profile
+There's a one time setup to configure an SSO session
 
 ```bash
-[aboutme]
-aws_access_key_id = <access-key-id>
-aws_secret_access_key = <secret-access-key>
+aws configure sso
+```
+
+- Start URL: <https://d-90667971b8.awsapps.com/start>
+- Region: `us-east-1`
+- Profile: `aboutme-deploy`
+
+Then you can log in whenever you need fresh creds
+
+```
+aws sso login --profile aboutme-deploy
 ```
 
 And then export the profile for use with Terraform and AWS CLI
 
 ```bash
-export AWS_PROFILE=aboutme
+export AWS_PROFILE=aboutme-deploy
 ```
 
 ### Infrastructure
@@ -84,7 +92,7 @@ terraform validate
 
 ### Frontend
 
-**Automatic**: Pushes to `main` automatically build and deploy to S3.
+**Automatic**: Pushes to `master` automatically build and deploy to S3.
 
 **Manual**: Upload static assets to the S3 bucket at `s3://lj-aboutme/`.
 
@@ -104,7 +112,7 @@ aws --profile aboutme s3 sync dist/ s3://lj-aboutme/ --delete
 
 #### Lambda
 
-**Automatic**: Pushes to `main` automatically build, zip, and deploy all Lambda functions.
+**Automatic**: Pushes to `master` automatically build, zip, and deploy all Lambda functions.
 
 **Manual**: Go to whichever function you want to deploy.
 
