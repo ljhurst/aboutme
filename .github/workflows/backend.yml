@@ -12,6 +12,7 @@ on:
     paths:
       - 'aboutme/lambdas/**'
       - '.github/workflows/backend.yml'
+  workflow_dispatch:
 
 jobs:
   lint-and-format:
@@ -42,7 +43,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     needs: lint-and-format
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     permissions:
       id-token: write
       contents: read
