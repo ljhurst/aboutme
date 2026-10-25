@@ -33,10 +33,8 @@ resource "aws_iam_role_policy" "lambda_exec_logs" {
   })
 }
 
-resource "aws_iam_openid_connect_provider" "github_actions" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+data "aws_iam_openid_connect_provider" "github_actions" {
+  url = "https://token.actions.githubusercontent.com"
 }
 
 locals {
@@ -59,7 +57,7 @@ resource "aws_iam_role" "github_actions_backend_deploy" {
       Effect = "Allow"
       Action = "sts:AssumeRoleWithWebIdentity"
       Principal = {
-        Federated = aws_iam_openid_connect_provider.github_actions.arn
+        Federated = data.aws_iam_openid_connect_provider.github_actions.arn
       }
       Condition = local.github_actions_oidc_condition
     }]
@@ -98,7 +96,7 @@ resource "aws_iam_role" "github_actions_frontend_deploy" {
       Effect = "Allow"
       Action = "sts:AssumeRoleWithWebIdentity"
       Principal = {
-        Federated = aws_iam_openid_connect_provider.github_actions.arn
+        Federated = data.aws_iam_openid_connect_provider.github_actions.arn
       }
       Condition = local.github_actions_oidc_condition
     }]
