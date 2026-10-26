@@ -13,16 +13,16 @@
         "preflight": "npm run format && npm run lint:fix"
     },
     "devDependencies": {
-        "@eslint/js": "^9.39.2",
-        "@types/aws-lambda": "^8.10.159",
-        "@types/debug": "^4.1.12",
-        "@types/node": "^24.0.0",
+        "@eslint/js": "^9.39.5",
+        "@types/aws-lambda": "^8.10.164",
+        "@types/debug": "^4.1.13",
+        "@types/node": "^24.19.2",
         "@types/spotify-web-api-node": "^5.0.11",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-n": "^17.23.1",
-        "prettier": "^3.7.4",
-        "tsx": "^4.21.0",
+        "eslint-plugin-n": "^17.24.0",
+        "prettier": "^3.9.10",
+        "tsx": "^4.23.15",
         "typescript": "^5.9.3"
     }
 }

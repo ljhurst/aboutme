@@ -13,9 +13,9 @@
     "author": "Luke Hurst",
     "license": "ISC",
     "dependencies": {
-        "express": "^4.16.3",
+        "express": "^4.22.3",
         "googleapis": "^34.0.0",
-        "request": "^2.88.0",
-        "request-promise": "^4.2.2"
+        "request": "^2.88.2",
+        "request-promise": "^4.2.6"
     }
 }
