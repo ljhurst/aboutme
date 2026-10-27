@@ -18,3 +18,8 @@ variable "spotify_client_id" {
   type        = string
   sensitive   = true
 }
+
+variable "lambda_package_dir" {
+  description = "Directory holding the Lambda zips; run aboutme/scripts/build_lambdas.sh"
+  type        = string
+}

@@ -13,11 +13,8 @@ resource "aws_lambda_function" "top_tracks" {
     }
   }
 
-  filename = "lambda_placeholder.zip"
-
-  lifecycle {
-    ignore_changes = [filename, source_code_hash]
-  }
+  filename         = "${var.lambda_package_dir}/top-tracks.zip"
+  source_code_hash = filebase64sha256("${var.lambda_package_dir}/top-tracks.zip")
 }
 
 resource "aws_lambda_function" "current_contribs" {
@@ -33,11 +30,8 @@ resource "aws_lambda_function" "current_contribs" {
     }
   }
 
-  filename = "lambda_placeholder.zip"
-
-  lifecycle {
-    ignore_changes = [filename, source_code_hash]
-  }
+  filename         = "${var.lambda_package_dir}/current-contribs.zip"
+  source_code_hash = filebase64sha256("${var.lambda_package_dir}/current-contribs.zip")
 }
 
 resource "aws_cloudwatch_log_group" "top_tracks" {
@@ -65,11 +59,8 @@ resource "aws_lambda_function" "recent_runs" {
     }
   }
 
-  filename = "lambda_placeholder.zip"
-
-  lifecycle {
-    ignore_changes = [filename, source_code_hash]
-  }
+  filename         = "${var.lambda_package_dir}/recent-runs.zip"
+  source_code_hash = filebase64sha256("${var.lambda_package_dir}/recent-runs.zip")
 }
 
 resource "aws_cloudwatch_log_group" "recent_runs" {
