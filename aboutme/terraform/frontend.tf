@@ -17,29 +17,11 @@ module "site" {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src https://fonts.gstatic.com",
     "img-src 'self' data: https:",
-    "connect-src 'self' ${aws_api_gateway_stage.aboutme.invoke_url} https://api.github.com",
+    "connect-src 'self' ${aws_api_gateway_stage.aboutme.invoke_url}/ https://api.github.com",
     "frame-src https://buttons.github.io",
     "object-src 'none'",
     "base-uri 'self'",
     "frame-ancestors 'none'",
     "form-action 'self'",
   ])
-}
-
-moved {
-  from = aws_s3_bucket.static_site
-  to   = module.site.aws_s3_bucket.this
-}
-
-moved {
-  from = aws_s3_bucket_policy.static_site
-  to   = module.site.aws_s3_bucket_policy.this
-}
-
-removed {
-  from = aws_s3_bucket_website_configuration.static_site
-
-  lifecycle {
-    destroy = false
-  }
 }
