@@ -125,7 +125,7 @@ npm run zip
 Deploy it
 
 ```bash
-aws --profile aboutme lambda update-function-code --function-name lj-aboutme-current-contribs --zip-file fileb://currentContribs.zip  --region us-east-1 
+aws --profile aboutme lambda update-function-code --function-name lj-aboutme-current-contribs --zip-file fileb://currentContribs.zip  --region us-east-1
 ```
 
 If you need to update environment variables, modify them in `aboutme/terraform/terraform.tfvars`
@@ -150,8 +150,8 @@ for a JavaScript example. In general the response looks like this.
     "statusCode": 200,
     "headers": {
         "Access-Control-Allow-Origin": "*"
-    },                                                                          
-    "body": "{}",                                               
+    },
+    "body": "{}",
     "isBase64Encoded": false
 }
 ```
