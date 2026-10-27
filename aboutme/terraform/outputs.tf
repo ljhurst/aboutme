@@ -1,6 +1,16 @@
-output "s3_website_url" {
-  description = "S3 website URL"
-  value       = "http://${aws_s3_bucket_website_configuration.static_site.website_endpoint}"
+output "site_url" {
+  description = "Site URL"
+  value       = "https://${local.site_domain}"
+}
+
+output "cname_target" {
+  description = "Target for the DNS-only CNAME of the site hostname"
+  value       = module.site.cname_target
+}
+
+output "distribution_id" {
+  description = "CloudFront distribution to invalidate after deploying"
+  value       = module.site.distribution_id
 }
 
 output "api_gateway_url" {
