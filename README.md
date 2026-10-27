@@ -131,6 +131,10 @@ aws --profile aboutme lambda update-function-code --function-name lj-aboutme-cur
 If you need to update environment variables, modify them in `aboutme/terraform/terraform.tfvars`
 and re-apply the Terraform configuration.
 
+The Spotify client secret and refresh token and the Garmin login are not environment variables:
+the Lambdas read them from SSM SecureStrings under `/aboutme/` at runtime, and Terraform never sees them.
+Store or rotate them with `aboutme/scripts/set-secrets.sh` (it prompts for each value without echoing it).
+
 #### API Gateway
 
 A `lj-aboutme` API Gateway exists to allow the browser to call the Lambda functions. There is a resource for each integration.
@@ -186,7 +190,8 @@ DEBUG=top-tracks:auth node auth-server.js
 Then open a browser and visit <https://localhost:8888>.
 
 There you will see a link to authorize with Spotify.
-After clicking the link, the `access_token` and associated `refresh_token` will be printed to the terminal so they can be saved in `.env` or uploaded to the Lambda.
+After clicking the link, the `access_token` and associated `refresh_token` will be printed to the terminal so they can be saved in `.env` for local runs.
+Store the `refresh_token` and the `client_secret` for the deployed Lambda with `aboutme/scripts/set-secrets.sh`.
 
 ### GitHub
 

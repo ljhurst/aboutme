@@ -78,6 +78,10 @@ jobs:
         working-directory: aboutme/lambdas/${{ matrix.lambda.name }}
         run: npm ci
 
+      - name: Unit tests
+        working-directory: aboutme/lambdas/${{ matrix.lambda.name }}
+        run: npm run test:unit --if-present
+
       - name: Build Lambda
         working-directory: aboutme/lambdas/${{ matrix.lambda.name }}
         run: npm run build

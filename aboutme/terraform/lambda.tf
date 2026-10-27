@@ -6,11 +6,10 @@ resource "aws_lambda_function" "top_tracks" {
 
   environment {
     variables = {
-      "DEBUG"                 = "top-tracks:lambda"
-      "SPOTIFY_ACCESS_TOKEN"  = var.spotify_access_token
-      "SPOTIFY_CLIENT_ID"     = var.spotify_client_id
-      "SPOTIFY_CLIENT_SECRET" = var.spotify_client_secret
-      "SPOTIFY_REFRESH_TOKEN" = var.spotify_refresh_token
+      "DEBUG"                           = "top-tracks:lambda"
+      "SPOTIFY_CLIENT_ID"               = var.spotify_client_id
+      "SPOTIFY_CLIENT_SECRET_SSM_PARAM" = local.spotify_client_secret_ssm_param
+      "SPOTIFY_REFRESH_TOKEN_SSM_PARAM" = local.spotify_refresh_token_ssm_param
     }
   }
 
@@ -60,9 +59,9 @@ resource "aws_lambda_function" "recent_runs" {
 
   environment {
     variables = {
-      "DEBUG"           = "recent-runs:lambda"
-      "GARMIN_EMAIL"    = var.garmin_email
-      "GARMIN_PASSWORD" = var.garmin_password
+      "DEBUG"                     = "recent-runs:lambda"
+      "GARMIN_EMAIL_SSM_PARAM"    = local.garmin_email_ssm_param
+      "GARMIN_PASSWORD_SSM_PARAM" = local.garmin_password_ssm_param
     }
   }
 

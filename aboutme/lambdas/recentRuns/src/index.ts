@@ -2,6 +2,7 @@ import GarminConnectPkg from 'garmin-connect';
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import createDebug from 'debug';
 
+import { getParameters, parameterNameFromEnv } from './ssm.js';
 import type { QueryStringParameters, RunActivity, ErrorResponse } from './types.js';
 import type { GarminConnect, GarminActivity } from 'garmin-connect';
 
@@ -21,9 +22,13 @@ const getRunsLimit = (queryStringParameters: QueryStringParameters): number | un
 };
 
 const authenticateGarmin = async (): Promise<GarminConnect> => {
+    const emailParam = parameterNameFromEnv('GARMIN_EMAIL_SSM_PARAM');
+    const passwordParam = parameterNameFromEnv('GARMIN_PASSWORD_SSM_PARAM');
+    const parameters = await getParameters([emailParam, passwordParam]);
+
     const garminConnect = new GarminConnectClass({
-        username: process.env.GARMIN_EMAIL ?? '',
-        password: process.env.GARMIN_PASSWORD ?? '',
+        username: parameters.get(emailParam) ?? '',
+        password: parameters.get(passwordParam) ?? '',
     });
 
     await garminConnect.login();
