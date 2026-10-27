@@ -7,7 +7,7 @@ A repository for my personal website
 
 ## Where
 
-My website is available at <http://lj-aboutme.s3-website-us-west-2.amazonaws.com>
+My website is available at <https://aboutme.bylukehurst.com>
 
 ## Tour
 

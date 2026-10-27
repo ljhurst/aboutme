@@ -10,6 +10,8 @@ provider "aws" {
   }
 }
 
+# The state still holds the website configuration under this provider until its removal has been applied.
+# tflint-ignore: terraform_unused_declarations
 provider "aws" {
   alias  = "west"
   region = "us-west-2"
