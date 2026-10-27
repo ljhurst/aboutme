@@ -20,27 +20,11 @@ jobs:
       setup-command: npm ci --prefix aboutme/lambdas && npm ci --prefix aboutme/public
 
   unit-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          cache: 'npm'
-          cache-dependency-path: aboutme/lambdas/package-lock.json
-
-      - name: Install dev dependencies
-        run: npm ci
-        working-directory: aboutme/lambdas
-
-      - name: Test
-        run: |
-          for dir in */; do
-            [ -f "$dir/package.json" ] || continue
-            (cd "$dir" && npm ci && npm run test:unit --if-present)
-          done
-        working-directory: aboutme/lambdas
+    uses: ljhurst/stych/.github/workflows/test.yml@feat/test-workflow
+    with:
+      command: aboutme/scripts/test_lambdas.sh
+      node-version-file: .nvmrc
+      paths: |
+        aboutme/lambdas/**
+        aboutme/scripts/test_lambdas.sh
+        .github/workflows/check.yml
