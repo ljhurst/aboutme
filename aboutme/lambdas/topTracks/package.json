@@ -8,7 +8,8 @@
         "build": "tsc",
         "clean": "rm -rf dist topTracks.zip",
         "test": "DEBUG=top-tracks:* tsx src/index.spec.ts",
-        "zip": "npm run build && (cd dist && zip -r ../topTracks.zip index.js types.js *.map) && zip -r topTracks.zip package.json package-lock.json node_modules/"
+        "test:unit": "tsx --test src/ssm.test.ts",
+        "zip": "npm run build && (cd dist && zip -r ../topTracks.zip index.js ssm.js types.js *.map) && zip -r topTracks.zip package.json package-lock.json node_modules/"
     },
     "repository": {
         "type": "git",
@@ -17,6 +18,7 @@
     "author": "Luke Hurst",
     "license": "ISC",
     "dependencies": {
+        "@aws-sdk/client-ssm": "^3.1157.0",
         "debug": "^4.4.3",
         "spotify-web-api-node": "^5.0.2"
     },

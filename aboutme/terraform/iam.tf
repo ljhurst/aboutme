@@ -13,6 +13,25 @@ resource "aws_iam_role" "lambda_exec" {
   })
 }
 
+resource "aws_iam_role_policy" "lambda_exec_ssm" {
+  name = "lj-aboutme-lambda-exec-ssm"
+  role = aws_iam_role.lambda_exec.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = ["ssm:GetParameters"]
+      Resource = [
+        "${local.ssm_param_arn_prefix}${local.spotify_client_secret_ssm_param}",
+        "${local.ssm_param_arn_prefix}${local.spotify_refresh_token_ssm_param}",
+        "${local.ssm_param_arn_prefix}${local.garmin_email_ssm_param}",
+        "${local.ssm_param_arn_prefix}${local.garmin_password_ssm_param}",
+      ]
+    }]
+  })
+}
+
 resource "aws_iam_role_policy" "lambda_exec_logs" {
   name = "lambda-cloudwatch-logs"
   role = aws_iam_role.lambda_exec.id

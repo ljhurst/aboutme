@@ -18,33 +18,3 @@ variable "spotify_client_id" {
   type        = string
   sensitive   = true
 }
-
-variable "spotify_client_secret" {
-  description = "Spotify Client Secret"
-  type        = string
-  sensitive   = true
-}
-
-variable "spotify_access_token" {
-  description = "Spotify Access Token"
-  type        = string
-  sensitive   = true
-}
-
-variable "spotify_refresh_token" {
-  description = "Spotify Refresh Token"
-  type        = string
-  sensitive   = true
-}
-
-variable "garmin_email" {
-  description = "Garmin Connect Email"
-  type        = string
-  sensitive   = true
-}
-
-variable "garmin_password" {
-  description = "Garmin Connect Password"
-  type        = string
-  sensitive   = true
-}
