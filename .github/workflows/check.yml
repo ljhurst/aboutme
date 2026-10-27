@@ -20,7 +20,7 @@ jobs:
       setup-command: npm ci --prefix aboutme/lambdas && npm ci --prefix aboutme/public
 
   unit-test:
-    uses: ljhurst/stych/.github/workflows/test.yml@feat/test-workflow
+    uses: ljhurst/stych/.github/workflows/test.yml@v1
     with:
       command: aboutme/scripts/test_lambdas.sh
       node-version-file: .nvmrc
