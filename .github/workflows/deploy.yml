@@ -36,6 +36,7 @@ jobs:
       plan-role-arn: arn:aws:iam::755958650241:role/stych/aboutme-ci-plan
       apply-role-arn: arn:aws:iam::755958650241:role/stych/aboutme-ci-apply
       bucket: lj-aboutme
+      distribution-id: EYJAHHH8OB990
       node-version-file: .nvmrc
       build-command: >-
         cd aboutme/public && npm ci && npm run build
