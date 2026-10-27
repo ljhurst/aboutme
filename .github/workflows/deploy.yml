@@ -1,0 +1,42 @@
+---
+name: Deploy
+
+# yamllint disable-line rule:truthy
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    uses: ljhurst/stych/.github/workflows/terraform.yml@v1
+    with:
+      plan-role-arn: arn:aws:iam::755958650241:role/stych/aboutme-ci-plan
+      apply-role-arn: arn:aws:iam::755958650241:role/stych/aboutme-ci-apply
+      working-directory: aboutme/terraform
+      build-command: aboutme/scripts/build_lambdas.sh
+      node-version-file: .nvmrc
+
+  site:
+    needs: terraform
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    uses: ljhurst/stych/.github/workflows/static-site.yml@v1
+    with:
+      plan-role-arn: arn:aws:iam::755958650241:role/stych/aboutme-ci-plan
+      apply-role-arn: arn:aws:iam::755958650241:role/stych/aboutme-ci-apply
+      bucket: lj-aboutme
+      node-version-file: .nvmrc
+      build-command: >-
+        cd aboutme/public && npm ci && npm run build
+        && mkdir -p ../../site && cp -r dist/. ../../site/

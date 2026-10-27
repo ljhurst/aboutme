@@ -1,0 +1,5 @@
+aws_region         = "us-east-1"
+environment        = "prod"
+project_name       = "aboutme"
+spotify_client_id  = "9e04d9329bd14058a58c9197a2aa803a"
+lambda_package_dir = "../lambdas/dist"

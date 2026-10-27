@@ -27,10 +27,10 @@ My website is available at <http://lj-aboutme.s3-website-us-west-2.amazonaws.com
 
 ## Deployment
 
-Deployments are automated via GitHub Actions:
+Deployments run through [stych](https://github.com/ljhurst/stych)'s shared workflows:
 
-- **Pull Requests**: Run lint and format checks
-- **Push to main**: Automatically build and deploy frontend to S3 and all Lambda functions
+- **Pull Requests**: `Check` runs the pre-commit hooks and unit tests; `Deploy` posts the Terraform plan and a site preview
+- **Push to main**: `Deploy` applies Terraform (including the Lambda code) and syncs the site to S3
 
 For manual deployments (useful for local testing), see the sections below.
 
@@ -92,7 +92,7 @@ terraform validate
 
 ### Frontend
 
-**Automatic**: Pushes to `main` automatically build and deploy to S3.
+**Automatic**: Pushes to `main` build and sync the site to S3.
 
 **Manual**: Upload static assets to the S3 bucket at `s3://lj-aboutme/`.
 
@@ -112,20 +112,12 @@ aws --profile aboutme s3 sync dist/ s3://lj-aboutme/ --delete
 
 #### Lambda
 
-**Automatic**: Pushes to `main` automatically build, zip, and deploy all Lambda functions.
+**Automatic**: Pushes to `main` build the zips and Terraform updates the functions.
 
-**Manual**: Go to whichever function you want to deploy.
-
-Zip up the Lambda handler and its dependencies.
+**Manual**: Build the zips, then apply Terraform from `aboutme/terraform`.
 
 ```bash
-npm run zip
-```
-
-Deploy it
-
-```bash
-aws --profile aboutme lambda update-function-code --function-name lj-aboutme-current-contribs --zip-file fileb://currentContribs.zip  --region us-east-1 
+aboutme/scripts/build_lambdas.sh
 ```
 
 If you need to update environment variables, modify them in `aboutme/terraform/terraform.tfvars`
@@ -150,8 +142,8 @@ for a JavaScript example. In general the response looks like this.
     "statusCode": 200,
     "headers": {
         "Access-Control-Allow-Origin": "*"
-    },                                                                          
-    "body": "{}",                                               
+    },
+    "body": "{}",
     "isBase64Encoded": false
 }
 ```

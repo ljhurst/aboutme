@@ -9,6 +9,7 @@
     },
     "scripts": {
         "format": "prettier --write .",
+        "format:check": "prettier --check .",
         "lint": "eslint .",
         "lint:fix": "npm run lint -- --fix",
         "preflight": "npm run format && npm run lint:fix",
