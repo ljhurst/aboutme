@@ -12,7 +12,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/ljhurst/aboutme/tree/master/aboutme/lambdas/currentContribs"
+        "url": "https://github.com/ljhurst/aboutme/tree/main/aboutme/lambdas/currentContribs"
     },
     "author": "Luke Hurst",
     "license": "ISC",

@@ -30,7 +30,7 @@ My website is available at <http://lj-aboutme.s3-website-us-west-2.amazonaws.com
 Deployments are automated via GitHub Actions:
 
 - **Pull Requests**: Run lint and format checks
-- **Push to master**: Automatically build and deploy frontend to S3 and all Lambda functions
+- **Push to main**: Automatically build and deploy frontend to S3 and all Lambda functions
 
 For manual deployments (useful for local testing), see the sections below.
 
@@ -92,7 +92,7 @@ terraform validate
 
 ### Frontend
 
-**Automatic**: Pushes to `master` automatically build and deploy to S3.
+**Automatic**: Pushes to `main` automatically build and deploy to S3.
 
 **Manual**: Upload static assets to the S3 bucket at `s3://lj-aboutme/`.
 
@@ -112,7 +112,7 @@ aws --profile aboutme s3 sync dist/ s3://lj-aboutme/ --delete
 
 #### Lambda
 
-**Automatic**: Pushes to `master` automatically build, zip, and deploy all Lambda functions.
+**Automatic**: Pushes to `main` automatically build, zip, and deploy all Lambda functions.
 
 **Manual**: Go to whichever function you want to deploy.
 
