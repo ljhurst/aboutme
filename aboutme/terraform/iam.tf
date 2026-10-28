@@ -1,6 +1,16 @@
-resource "aws_iam_role" "lambda_exec" {
-  name                 = "aboutme-lambda-exec"
-  permissions_boundary = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/stych/aboutme-boundary"
+locals {
+  lambda_boundary_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/stych/aboutme-boundary"
+
+  lambda_functions_with_params = {
+    for key, function in local.lambda_functions : key => function if length(function.ssm_params) > 0
+  }
+}
+
+resource "aws_iam_role" "lambda" {
+  for_each = local.lambda_functions
+
+  name                 = "aboutme-${replace(each.key, "_", "-")}"
+  permissions_boundary = local.lambda_boundary_arn
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -14,41 +24,37 @@ resource "aws_iam_role" "lambda_exec" {
   })
 }
 
-resource "aws_iam_role_policy" "lambda_exec_ssm" {
-  name = "aboutme-lambda-exec-ssm"
-  role = aws_iam_role.lambda_exec.id
+resource "aws_iam_role_policy" "lambda_ssm" {
+  for_each = local.lambda_functions_with_params
+
+  name = "aboutme-lambda-ssm"
+  role = aws_iam_role.lambda[each.key].id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["ssm:GetParameters"]
+      Resource = [for param in each.value.ssm_params : "${local.ssm_param_arn_prefix}${param}"]
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_logs" {
+  for_each = local.lambda_functions
+
+  name = "lambda-cloudwatch-logs"
+  role = aws_iam_role.lambda[each.key].id
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
       Effect = "Allow"
-      Action = ["ssm:GetParameters"]
-      Resource = [
-        "${local.ssm_param_arn_prefix}${local.spotify_client_secret_ssm_param}",
-        "${local.ssm_param_arn_prefix}${local.spotify_refresh_token_ssm_param}",
-        "${local.ssm_param_arn_prefix}${local.garmin_email_ssm_param}",
-        "${local.ssm_param_arn_prefix}${local.garmin_password_ssm_param}",
+      Action = [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
       ]
+      Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${each.value.name}:*"
     }]
-  })
-}
-
-resource "aws_iam_role_policy" "lambda_exec_logs" {
-  name = "lambda-cloudwatch-logs"
-  role = aws_iam_role.lambda_exec.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ]
-        Resource = "arn:aws:logs:*:*:*"
-      }
-    ]
   })
 }
