@@ -1,6 +1,23 @@
+locals {
+  lambda_functions = {
+    top_tracks = {
+      name       = "lj-aboutme-top-tracks"
+      ssm_params = [local.spotify_client_secret_ssm_param, local.spotify_refresh_token_ssm_param]
+    }
+    current_contribs = {
+      name       = "lj-aboutme-current-contribs"
+      ssm_params = []
+    }
+    recent_runs = {
+      name       = "lj-aboutme-recent-runs"
+      ssm_params = [local.garmin_email_ssm_param, local.garmin_password_ssm_param]
+    }
+  }
+}
+
 resource "aws_lambda_function" "top_tracks" {
-  function_name = "lj-aboutme-top-tracks"
-  role          = aws_iam_role.lambda_exec.arn
+  function_name = local.lambda_functions.top_tracks.name
+  role          = aws_iam_role.lambda["top_tracks"].arn
   handler       = "index.handler"
   runtime       = "nodejs24.x"
 
@@ -18,8 +35,8 @@ resource "aws_lambda_function" "top_tracks" {
 }
 
 resource "aws_lambda_function" "current_contribs" {
-  function_name = "lj-aboutme-current-contribs"
-  role          = aws_iam_role.lambda_exec.arn
+  function_name = local.lambda_functions.current_contribs.name
+  role          = aws_iam_role.lambda["current_contribs"].arn
   handler       = "index.handler"
   runtime       = "nodejs24.x"
   timeout       = 10
@@ -45,8 +62,8 @@ resource "aws_cloudwatch_log_group" "current_contribs" {
 }
 
 resource "aws_lambda_function" "recent_runs" {
-  function_name = "lj-aboutme-recent-runs"
-  role          = aws_iam_role.lambda_exec.arn
+  function_name = local.lambda_functions.recent_runs.name
+  role          = aws_iam_role.lambda["recent_runs"].arn
   handler       = "index.handler"
   runtime       = "nodejs24.x"
   timeout       = 10
