@@ -3,8 +3,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Luke Hurst</title>
     <link rel="shortcut icon" href="images/favicon.ico" />
-    <link rel="stylesheet" href="css/style.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,200,300" />
+    <link rel="stylesheet" href="css/tailwind.css" />
 </head>
 
 <body
@@ -12,7 +12,7 @@
 >
     <!-- TODO: Add location of image -->
     <header
-        class="flex flex-col items-center gap-6 bg-[#263d36] bg-[url('images/header.jpg')] bg-[center_top] bg-no-repeat bg-cover leading-tight py-[10vw] px-8 text-center"
+        class="flex flex-col items-center gap-6 bg-[#263d36] bg-[url('/images/header.jpg')] bg-[center_top] bg-no-repeat bg-cover leading-tight py-[10vw] px-8 text-center"
     >
         <img
             src="https://graph.facebook.com/v2.7/1062530977138608/picture?type=square&height=225"
@@ -151,177 +151,12 @@
         </div>
     </footer>
 
-    <script
-        type="text/javascript"
-        src="https://cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js"
-    ></script>
+    <script type="text/javascript" src="js/vendor/handlebars.runtime.min.js"></script>
+    <script type="text/javascript" src="js/templates.js"></script>
     <script type="text/javascript" src="js/helper.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- TODO: Add hover effect to tracks - background and play arrow -->
-    <script id="song-template" type="text/x-handlebars-template">
-        {{#items}}
-            <li>
-                <a target='_blank' href='{{album.external_urls.spotify}}'>
-                    <img width='100%' src='{{album.images.[0].url}}' />
-                </a>
-                <p class='m-0 font-bold text-sm'>
-                    <a target='_blank' href='{{external_urls.spotify}}'>
-                        {{name}}
-                    </a>
-                </p>
-                <p class='m-0 text-sm'>
-                    {{#artists}}
-                        <a target='_blank' href='{{external_urls.spotify}}'>
-                            {{#unless @last}}
-                                {{name}},
-                            {{else}}
-                                {{name}}
-                            {{/unless}}
-                        </a>
-                    {{/artists}}
-                </p>
-            </li>
-        {{/items}}
-    </script>
-
-    <script id="contrib-template" type="text/x-handlebars-template">
-        {{#items}}
-            <li class='mb-4 list-none'>
-                <div class='bg-white rounded-lg shadow-sm border border-gray-200 p-4'>
-                    <div class='mb-2 text-gray-600 text-sm flex items-center justify-between'>
-                        <div>
-                            <span class='text-base mr-2'></span>
-                            <a
-                                href='{{actor.html_url}}'
-                                target='_blank'
-                                class='accent font-extrabold'
-                            >
-                                {{actor.login}}
-                            </a>
-                            <span class='text-gray-500'>pushed</span>
-                            <span
-                                class='bg-[#006400] text-white px-2 py-0.5 rounded-full text-xs font-semibold mx-1'
-                            >
-                                {{~payload.size~}}
-                            </span>
-                            <span class='text-gray-500'>
-                                {{#if_plural payload.size}}commits{{else}}commit{{/if_plural}}
-                                to
-                            </span>
-                            <a
-                                href='{{repo.html_url}}'
-                                target='_blank'
-                                class='accent font-extrabold'
-                            >
-                                {{repo.name}}
-                            </a>
-                        </div>
-                        <span class='text-gray-400 text-xs whitespace-nowrap ml-4'>
-                            {{time_ago created_at}}
-                        </span>
-                    </div>
-                    <ul class='ml-5 text-sm space-y-1'>
-                        {{#payload.commits}}
-                            <li class='text-gray-800'>
-                                <code class='text-blue-600 text-xs bg-gray-100 px-1 rounded'><a
-                                        href='{{html_url}}'
-                                        target='_blank'
-                                    >{{~truncate sha 7~}}</a></code>
-                                <span class='ml-1'>{{message}}</span>
-                            </li>
-                        {{/payload.commits}}
-                    </ul>
-                </div>
-            </li>
-        {{/items}}
-    </script>
-
-    <script id="run-template" type="text/x-handlebars-template">
-        {{#items}}
-            <li class='mb-4 list-none'>
-                <div class='bg-white rounded-lg shadow-sm border border-gray-200 p-4'>
-                    <div class='flex items-start justify-between mb-4'>
-                        <div>
-                            <a
-                                href='https://connect.garmin.com/modern/activity/{{activityId}}'
-                                target='_blank'
-                                class='text-gray-900 font-semibold text-lg hover:text-[#006400] transition-colors'
-                            >
-                                {{activityName}}
-                            </a>
-                            <div class='text-gray-500 text-sm mt-0.5'>
-                                {{time_ago beginTimestamp}}
-                            </div>
-                        </div>
-                        {{#if pr}}
-                            <span
-                                class='bg-[#006400] text-white text-xs font-medium px-2.5 py-1 rounded'
-                            >
-                                PR
-                            </span>
-                        {{/if}}
-                    </div>
-
-                    <div class='grid grid-cols-3 gap-4 mb-4'>
-                        <div>
-                            <div class='text-3xl font-bold text-[#006400]'>
-                                {{format_distance distance}}
-                            </div>
-                            <div
-                                class='text-xs text-gray-500 uppercase tracking-wide mt-1'
-                            >Distance</div>
-                        </div>
-                        <div>
-                            <div class='text-2xl font-bold text-gray-900'>
-                                {{format_pace averageSpeed}}
-                            </div>
-                            <div
-                                class='text-xs text-gray-500 uppercase tracking-wide mt-1'
-                            >Pace</div>
-                        </div>
-                        <div>
-                            <div class='text-2xl font-bold text-gray-900'>
-                                {{format_duration duration}}
-                            </div>
-                            <div
-                                class='text-xs text-gray-500 uppercase tracking-wide mt-1'
-                            >Time</div>
-                        </div>
-                    </div>
-
-                    <div class='flex gap-6 text-sm text-gray-600 pt-3 border-t border-gray-100'>
-                        <span>{{averageHR}} bpm</span>
-                        <span>{{calories}} cal</span>
-                        <span>{{format_elevation elevationGain}} elev</span>
-                        <span>{{avgPower}}W</span>
-                    </div>
-                </div>
-            </li>
-        {{/items}}
-    </script>
-
-    <script id="error-template" type="text/x-handlebars-template">
-        <li class='mb-4 list-none col-span-2 md:col-span-3 lg:col-span-5'>
-            <div class='bg-white rounded-lg shadow-sm border border-gray-200 p-4'>
-                <div class='flex flex-col items-center justify-center py-8 text-center'>
-                    <div class='text-red-500 text-4xl mb-4'>⚠️</div>
-                    <h3 class='text-lg font-semibold text-gray-900 mb-2'>Oh no!</h3>
-                    <p class='text-gray-600 mb-6'>{{message}}</p>
-                    {{#if canRetry}}
-                        <button
-                            data-section='{{sectionName}}'
-                            onclick="window.retryFunctions && window.retryFunctions['{{sectionName}}'] && window.retryFunctions['{{sectionName}}']()"
-                            class='retry-button px-6 py-2 bg-[#006400] hover:bg-[#008000] text-white font-semibold rounded-full transition-colors duration-200'
-                        >
-                            <span class='retry-spinner hidden'></span>
-                            Retry
-                        </button>
-                    {{/if}}
-                </div>
-            </div>
-        </li>
-    </script>
 
     <script type="text/javascript" src="js/render.js"></script>
 </body>

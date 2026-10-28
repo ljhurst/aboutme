@@ -7,10 +7,6 @@
     const FILLER_LOADING_TEXT = 'Loading...';
     const FILLER_HREF = '#';
 
-    function getInnerHtmlById(id) {
-        return document.getElementById(id).innerHTML;
-    }
-
     function setInnerHtmlById(id, html) {
         document.getElementById(id).innerHTML = html;
     }
@@ -68,10 +64,7 @@
             canRetry: true,
         };
 
-        const errorTemplateHtml = getInnerHtmlById('error-template');
-        const errorTemplate = Handlebars.compile(errorTemplateHtml);
-
-        renderError(listId, errorTemplate, errorData);
+        renderError(listId, Handlebars.templates.error, errorData);
     }
 
     function getUserFriendlyMessage(error, sectionName) {
@@ -131,8 +124,7 @@
     }
 
     function createDataSource(config) {
-        const templateHtml = getInnerHtmlById(config.templateId);
-        const template = Handlebars.compile(templateHtml);
+        const template = Handlebars.templates[config.template];
         const fillerArray = new Array(LIMIT).fill().map(() => config.filler);
 
         renderSection(config.listId, template, fillerArray);
@@ -153,7 +145,7 @@
 
     const dataSources = [
         {
-            templateId: 'song-template',
+            template: 'song',
             listId: 'top-tracks-list',
             endpoint: 'top-tracks',
             sectionName: 'Top Tracks',
@@ -179,7 +171,7 @@
             },
         },
         {
-            templateId: 'contrib-template',
+            template: 'contrib',
             listId: 'current-contribs-list',
             endpoint: 'current-contribs',
             sectionName: 'Current Contributions',
@@ -195,7 +187,7 @@
             },
         },
         {
-            templateId: 'run-template',
+            template: 'run',
             listId: 'recent-runs-list',
             endpoint: 'recent-runs',
             sectionName: 'Recent Runs',
@@ -208,6 +200,14 @@
             },
         },
     ];
+
+    document.addEventListener('click', (event) => {
+        const button = event.target.closest('.retry-button');
+
+        if (button) {
+            window.retryFunctions?.[button.dataset.section]?.();
+        }
+    });
 
     const loadFunctions = dataSources.map((config) => createDataSource(config));
     loadFunctions.forEach((loadFunc) => loadFunc());
