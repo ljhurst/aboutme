@@ -1,0 +1,23 @@
+{{#items}}
+    <li>
+        <a target='_blank' href='{{album.external_urls.spotify}}'>
+            <img width='100%' src='{{album.images.[0].url}}' />
+        </a>
+        <p class='m-0 font-bold text-sm'>
+            <a target='_blank' href='{{external_urls.spotify}}'>
+                {{name}}
+            </a>
+        </p>
+        <p class='m-0 text-sm'>
+            {{#artists}}
+                <a target='_blank' href='{{external_urls.spotify}}'>
+                    {{#unless @last}}
+                        {{name}},
+                    {{else}}
+                        {{name}}
+                    {{/unless}}
+                </a>
+            {{/artists}}
+        </p>
+    </li>
+{{/items}}

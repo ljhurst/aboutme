@@ -9,11 +9,10 @@ module "site" {
   region      = "us-west-2"
   domain_name = local.site_domain
 
-  # The Tailwind CDN script and Handlebars compile at runtime, which needs unsafe-eval, and the retry button
-  # uses an inline handler.
+  # The GitHub follow button injects inline styles, so style-src keeps unsafe-inline.
   content_security_policy = join("; ", [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://buttons.github.io",
+    "script-src 'self' https://buttons.github.io",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src https://fonts.gstatic.com",
     "img-src 'self' data: https:",
