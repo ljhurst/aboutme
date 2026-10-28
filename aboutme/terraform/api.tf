@@ -253,6 +253,17 @@ resource "aws_api_gateway_stage" "aboutme" {
   stage_name    = "aboutme"
 }
 
+resource "aws_api_gateway_method_settings" "all" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  stage_name  = aws_api_gateway_stage.aboutme.stage_name
+  method_path = "*/*"
+
+  settings {
+    throttling_rate_limit  = 5
+    throttling_burst_limit = 10
+  }
+}
+
 resource "aws_lambda_permission" "api_gateway_current_contribs" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"

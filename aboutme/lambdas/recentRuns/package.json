@@ -1,6 +1,6 @@
 {
     "name": "recentruns",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "An AWS Lambda that pulls Garmin Connect activities",
     "main": "index.js",
     "type": "module",
@@ -8,7 +8,7 @@
         "build": "tsc",
         "clean": "rm -rf dist recentRuns.zip",
         "test": "DEBUG=recent-runs:* tsx src/index.spec.ts",
-        "test:unit": "tsx --test src/ssm.test.ts",
+        "test:unit": "tsx --test 'src/**/*.test.ts'",
         "zip": "npm run build && (cd dist && zip -r ../recentRuns.zip index.js ssm.js types.js *.map) && zip -r recentRuns.zip package.json package-lock.json node_modules/"
     },
     "repository": {

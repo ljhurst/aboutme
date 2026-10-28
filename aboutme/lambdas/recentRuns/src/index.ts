@@ -2,6 +2,7 @@ import GarminConnectPkg from 'garmin-connect';
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import createDebug from 'debug';
 
+import { createSessionProvider } from './garmin-session.js';
 import { getParameters, parameterNameFromEnv } from './ssm.js';
 import type { QueryStringParameters, RunActivity, ErrorResponse } from './types.js';
 import type { GarminConnect, GarminActivity } from 'garmin-connect';
@@ -35,6 +36,9 @@ const authenticateGarmin = async (): Promise<GarminConnect> => {
 
     return garminConnect;
 };
+
+const { getSession: getGarminClient, resetSession: resetGarminClient } =
+    createSessionProvider(authenticateGarmin);
 
 const getRecentRuns = async (
     client: GarminConnect,
@@ -89,7 +93,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     log(`Received event: ${JSON.stringify(event)}`);
 
     try {
-        const client = await authenticateGarmin();
+        const client = await getGarminClient();
         const runsLimit = getRunsLimit(event.queryStringParameters);
         const runs = await getRecentRuns(client, runsLimit);
 
@@ -97,6 +101,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         log(`Error: ${errorMessage}`);
+        resetGarminClient();
         return lambdaResponse(500, { error: errorMessage });
     }
 };
